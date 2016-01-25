@@ -1,0 +1,109 @@
+package vn.com.splussoftware.sms.config.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+
+@Configuration
+//@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class OAuth2ServerConfiguration {
+
+	private static final String RESOURCE_ID = "restservice";
+	
+	@Configuration
+	@EnableResourceServer
+	protected static class ResourceServerConfiguration extends
+			ResourceServerConfigurerAdapter {
+
+		@Override
+		public void configure(ResourceServerSecurityConfigurer resources) {
+			// @formatter:off
+			resources
+				.resourceId(RESOURCE_ID);
+			// @formatter:on
+		}
+
+		@Override
+		public void configure(HttpSecurity http) throws Exception {
+			// @formatter:off
+			http
+				.authorizeRequests()
+					.antMatchers(HttpMethod.PUT, "/**").authenticated()
+					.antMatchers(HttpMethod.PATCH, "/**").authenticated()
+					.antMatchers(HttpMethod.DELETE, "/**").authenticated()
+					.antMatchers(HttpMethod.POST, "/**").authenticated()
+					.anyRequest().permitAll();
+			// @formatter:on
+		}
+
+	}
+
+	@Configuration
+	@EnableAuthorizationServer
+	protected static class AuthorizationServerConfiguration extends
+			AuthorizationServerConfigurerAdapter {
+
+		private TokenStore tokenStore = new InMemoryTokenStore();
+
+		@Autowired
+		@Qualifier("authenticationManagerBean")
+		private AuthenticationManager authenticationManager;
+
+		@Autowired
+		private CustomUserDetailsService userDetailsService;
+		
+		@Autowired
+		private OAuth2Interceptor initialSampleInterceptor;
+
+		@Override
+		public void configure(AuthorizationServerEndpointsConfigurer endpoints)
+				throws Exception {
+			endpoints
+				.tokenStore(this.tokenStore)
+				.authenticationManager(this.authenticationManager)
+//				.userDetailsService(userDetailsService)
+				.addInterceptor(initialSampleInterceptor);
+		}
+
+		@Override
+		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+			// @formatter:off
+			clients
+				.inMemory()
+					.withClient("sms_web")
+						.authorizedGrantTypes("authorization_code", "password", "refresh_token")
+						.accessTokenValiditySeconds(86400)
+						.authorities("USER")
+						.scopes("read", "write")
+						.resourceIds(RESOURCE_ID)
+						.secret("123");
+			// @formatter:on
+		}
+
+		@Bean
+		@Primary
+		public DefaultTokenServices tokenServices() {
+			DefaultTokenServices tokenServices = new DefaultTokenServices();
+			tokenServices.setSupportRefreshToken(true);
+			tokenServices.setTokenStore(this.tokenStore);
+			return tokenServices;
+		}
+
+	}
+
+}

@@ -1,0 +1,30 @@
+jar {
+    baseName = 'sms-utils'
+    version =  '0.1.0'
+}
+
+
+dependencies {
+
+	/*
+		@author HuyNDN
+	*/
+	
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    
+    compile("org.springframework.security:spring-security-ldap")
+        
+	// Dozer is a Java Bean to Java Bean mapper that recursively copies data from one object to another.
+	// In this project, we use Dozer for converting between Entity and DTO
+    compile("net.sf.dozer:dozer:5.5.1")
+
+    compile project (':model')
+    
+    testCompile("junit:junit")
+}
+
+
+
+
