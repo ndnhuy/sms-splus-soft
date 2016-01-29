@@ -8,6 +8,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 

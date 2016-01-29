@@ -18,9 +18,11 @@ dependencies {
     
     // Security
     compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security.oauth:spring-security-oauth2")
-    compile("org.springframework.security:spring-security-ldap")
+    //compile("org.springframework.security.oauth:spring-security-oauth2")
+    //compile("org.springframework.security:spring-security-ldap")
     
+    //compile("org.springframework.cloud:spring-cloud-starter-zuul:1.0.0.RELEASE")
+    //compile("org.springframework.cloud:spring-cloud-starter-oauth2")
    
     
     // Database
@@ -35,6 +37,9 @@ dependencies {
     compile("org.projectlombok:lombok:1.16.6")
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+    
+    compile("org.apache.commons:commons-io:1.3.2")
+    
     
    
 	// Dozer is a Java Bean to Java Bean mapper that recursively copies data from one object to another.

@@ -3,6 +3,8 @@ package vn.com.splussoftware.sms.utils.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,17 @@ public class UserServiceImpl implements UserService {
 		WebUserEntity savedWebUser = userRepository.save(mapper.map(userDto, WebUserEntity.class));
 		
 		return mapper.map(savedWebUser, UserDto.class);
+	}
+
+	@Override
+	public UserDto findByUsername(String username) {
+		
+		if (userRepository.findByUsername(username) == null) {
+			throw new EntityNotFoundException("User not found with username " + username);
+		}
+		
+		
+		return mapper.map(userRepository.findByUsername(username), UserDto.class);
 	}
 
 }

@@ -55,6 +55,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		return new UserRepositoryUserDetails(user);
 	}
+	
+	
 
 //	private WebUser authenticateLDAPUser(String username) {
 //		LdapContextSource contextSource = new LdapContextSource();
