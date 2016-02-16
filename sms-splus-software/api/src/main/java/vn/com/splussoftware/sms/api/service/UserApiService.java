@@ -38,7 +38,7 @@ public class UserApiService {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public RestSuccessDto addUser(@RequestBody UserDto userDto) {
-		logger.info("Add user [username: {}]", userDto.getUsername());
+		logger.info("Add user [username: {}]", userDto.getUserkey());
 		
 		return new RestSuccessDto(HttpStatus.CREATED.value(), userService.add(userDto));
 	}

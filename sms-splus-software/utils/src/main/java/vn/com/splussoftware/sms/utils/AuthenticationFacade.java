@@ -23,10 +23,11 @@ public class AuthenticationFacade {
 	public UserDto getCurrentLoggedInUser() {
 		UserDto userDto = null;
 		try {
-			userDto = userService.findByUsername(getAuthentication().getName());
+			userDto = userService.findByUserkey(getAuthentication().getName());
 		} catch (EntityNotFoundException ex) {
+			//TODO for LDAP user, save the user's info to database
 			userDto = new UserDto();
-			userDto.setUsername(getAuthentication().getName());
+			userDto.setUserkey(getAuthentication().getName());
 		}
 		return userDto;
 	}

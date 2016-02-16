@@ -19,6 +19,8 @@ dependencies {
 	// Dozer is a Java Bean to Java Bean mapper that recursively copies data from one object to another.
 	// In this project, we use Dozer for converting between Entity and DTO
     compile("net.sf.dozer:dozer:5.5.1")
+    
+    compile("com.google.code.gson:gson:2.3.1")
 
     compile project (':model')
     

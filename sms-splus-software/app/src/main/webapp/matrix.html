@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Define form</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+<form class="matrix" data-id="1">
+	<table>
+		<tr>
+			<td>+</td>
+			<td>America</td>
+			<td>Europe</td>
+		</tr>
+		<tr>
+			<td>Summer</td>
+			<td data-x="1" data-y="1"><input type="text"/></td>
+			<td data-x="2" data-y="1"><input type="text"/></td>
+		</tr>
+		<tr>
+			<td>Winter</td>
+			<td data-x="1" data-y="2"><input type="text"/></td>
+			<td data-x="2" data-y="2"><input type="text"/></td>
+		</tr>
+	</table>
+	
+</form>
+<button class="submit">Submit</button>
+<script>
+function save(){
+	var input = $(this);
+	$.ajax({
+		  method: "GET",
+		  url: "http://localhost:8080/draftMatrix",
+		  data: {value : input.val(), x : input.closest("td").data("x"), y: input.closest("td").data("y"),id: input.closest("form").data("id")}
+		})
+		  .done(function( msg ) {
+		    alert( "Result: " + msg );
+		  });
+}
+$(document).ready(function(){
+		$("input").change(save);
+		$(".submit").click(function(){
+			$.ajax({
+				  method: "GET",
+				  url: "http://localhost:8080/submit",
+				  data: {}
+				})
+				  .done(function( msg ) {
+				  });
+		});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Define form</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+<form class="individual">
+	PHONE <input type="text" name="value" class="value"/> <br/>
+	<input value="1" type="hidden" name="id" class="id"/> <br/>
+</form>
+<form class="individual">
+	NAME <input type="text" name="value" class="value"/> <br/>
+	 <input value="2" type="hidden" name="id" class="id"/> <br/>
+</form>
+<button class="submit">Submit</button>
+<script>
+function save(){
+	var form = $(this).closest("form");
+	$.ajax({
+		  method: "GET",
+		  url: "draft",
+		  data: {value : form.find(".value").val(), id : form.find(".id").val()}
+		})
+		  .done(function( msg ) {
+		    alert( "Result: " + msg );
+		  });
+}
+$(document).ready(function(){
+		$(".submit").click(function(){
+			$.ajax({
+				  method: "GET",
+				  url: "submit",
+				  data: {}
+				})
+				  .done(function( msg ) {
+				  });
+		});
+		$("input").change(save);
+	
+});
+</script>
+</body>
+</html>

@@ -14,7 +14,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.common.exceptions.UnauthorizedClientException;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -51,6 +50,7 @@ import vn.com.splussoftware.sms.config.OAuth2UnauthorizedExceptionHandler;
 import vn.com.splussoftware.sms.ui.common.OAuthTokenHelper;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled=true)
 public class OAuth2ServerConfiguration {
 
 	private static final String RESOURCE_ID = "restservice";
@@ -79,11 +79,11 @@ public class OAuth2ServerConfiguration {
 			http
 				.authorizeRequests()
 					.antMatchers("/login", "/logout").permitAll()
-					.antMatchers(HttpMethod.PUT, "/**").authenticated()
-					.antMatchers(HttpMethod.PATCH, "/**").authenticated()
-					.antMatchers(HttpMethod.DELETE, "/**").authenticated()
-					.antMatchers(HttpMethod.POST, "/**").authenticated()
-					.antMatchers(HttpMethod.GET, "/**").authenticated()
+					.antMatchers(HttpMethod.PUT, "/secure/**").authenticated()
+					.antMatchers(HttpMethod.PATCH, "/secure/**").authenticated()
+					.antMatchers(HttpMethod.DELETE, "/secure/**").authenticated()
+					.antMatchers(HttpMethod.POST, "/secure/**").authenticated()
+					.antMatchers(HttpMethod.GET, "/secure/**").authenticated()
 					.anyRequest().permitAll()
 				.and()
 					.exceptionHandling()
@@ -212,10 +212,18 @@ public class OAuth2ServerConfiguration {
 								customRequest.addHeader("access_token", (String)map.get("access_token"));
 								customRequest.addHeader("refresh_token", (String)map.get("refresh_token"));
 								
-								//TODO Redirect user to the requested url
+								//TODO Refresh-Token function
+								String url = customRequest.getRequestURL().toString();
+								String queryString = customRequest.getQueryString();
+								
+								String completeUrl = url + queryString == null? "" : queryString;
 								
 								
-								filterChain.doFilter(customRequest, response);
+								httpResponse.addCookie(new Cookie("access_token", (String)map.get("access_token")));
+								httpResponse.addCookie(new Cookie("refresh_token", (String)map.get("refresh_token")));
+								httpResponse.sendRedirect(url);
+								
+								//filterChain.doFilter(customRequest, response);
 								return;
 							}
 						}

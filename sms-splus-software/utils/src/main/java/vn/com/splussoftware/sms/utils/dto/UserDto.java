@@ -1,6 +1,7 @@
 package vn.com.splussoftware.sms.utils.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.dozer.Mapping;
 
@@ -11,18 +12,19 @@ public class UserDto implements Serializable {
 	@Mapping("id")
 	private Integer id;
 	
-	@Mapping("username")
-	private String username;
+	@Mapping("userkey")
+	private String userkey;
 	
 	@Mapping("password")
 	private String password;
 	
-	@Mapping("email")
-	private String email;
 	
-	@Mapping("role")
-	private String role;
+	@Mapping("status")
+	private String status;
 	
-	@Mapping("userLoginType")
-	private String userLoginType;
+	@Mapping("loginMethodEntity")
+	private LoginMethodDto loginMethodDto;
+	
+	@Mapping("globalPermissions")
+	private List<GlobalPermissionDto> globalPermissions;
 }

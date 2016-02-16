@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
@@ -11,11 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.com.splussoftware.sms.model.entity.WebUserEntity;
-import vn.com.splussoftware.sms.model.repository.UserRepository;
+import vn.com.splussoftware.sms.model.entity.login.SMSUserEntity;
+import vn.com.splussoftware.sms.model.repository.login.UserRepository;
 import vn.com.splussoftware.sms.utils.dto.UserDto;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -30,14 +32,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserDto> findAll() {
 		
+		
+		
+		
 		if (logger.isDebugEnabled())
 			logger.debug("Find all users");
 		
 		
-		List<WebUserEntity> entityUsers = userRepository.findAll();
+		List<SMSUserEntity> entityUsers = userRepository.findAll();
 		
 		List<UserDto> dtoUsers = new ArrayList<UserDto>();
-		for (WebUserEntity user : entityUsers) {
+		for (SMSUserEntity user : entityUsers) {
 			dtoUsers.add(mapper.map(user, UserDto.class));
 		}
 		
@@ -47,22 +52,22 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto add(UserDto userDto) {
 		if (logger.isDebugEnabled())
-			logger.debug("Add user [username: {}]", userDto.getUsername());
+			logger.debug("Add user [username: {}]", userDto.getUserkey());
 		
-		WebUserEntity savedWebUser = userRepository.save(mapper.map(userDto, WebUserEntity.class));
+		SMSUserEntity savedWebUser = userRepository.save(mapper.map(userDto, SMSUserEntity.class));
 		
 		return mapper.map(savedWebUser, UserDto.class);
 	}
 
 	@Override
-	public UserDto findByUsername(String username) {
+	public UserDto findByUserkey(String username) {
 		
-		if (userRepository.findByUsername(username) == null) {
+		if (userRepository.findByUserkey(username) == null) {
 			throw new EntityNotFoundException("User not found with username " + username);
 		}
 		
 		
-		return mapper.map(userRepository.findByUsername(username), UserDto.class);
+		return mapper.map(userRepository.findByUserkey(username), UserDto.class);
 	}
 
 }
