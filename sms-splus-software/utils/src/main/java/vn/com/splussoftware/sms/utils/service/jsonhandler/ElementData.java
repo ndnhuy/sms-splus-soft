@@ -43,4 +43,5 @@ public abstract class ElementData implements Comparable<ElementData> {
 	public int compareTo(ElementData o) {
 		return this.getPosition() - o.getPosition();
 	}
+	
 }

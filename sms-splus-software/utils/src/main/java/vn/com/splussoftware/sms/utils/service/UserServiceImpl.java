@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.com.splussoftware.sms.model.entity.login.SMSUserEntity;
-import vn.com.splussoftware.sms.model.repository.login.UserRepository;
+import vn.com.splussoftware.sms.model.entity.auth.SMSUserEntity;
+import vn.com.splussoftware.sms.model.repository.auth.UserRepository;
 import vn.com.splussoftware.sms.utils.dto.UserDto;
 
 @Service
@@ -68,6 +68,16 @@ public class UserServiceImpl implements UserService {
 		
 		
 		return mapper.map(userRepository.findByUserkey(username), UserDto.class);
+	}
+
+	@Override
+	public UserDto findByUserkeyAndLoginMethodUrl(String userkey, String loginMethodUrl) {
+		SMSUserEntity entityUser = userRepository.findByUserkeyAndLoginMethodUrl(userkey, loginMethodUrl);
+		if (entityUser == null) {
+			throw new EntityNotFoundException(String.format("User not found with userkey '%s' and login-method-url '%s'", userkey, loginMethodUrl));
+		}
+		
+		return mapper.map(userRepository.findByUserkeyAndLoginMethodUrl(userkey, loginMethodUrl), UserDto.class);
 	}
 
 }

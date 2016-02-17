@@ -36,7 +36,7 @@ public class ServicesEntity {
 	
 	@NotNull
 	@Column(name = ServicesModelConstant.COLUMN_DESCRIPTION)
-	private String desciption;
+	private String description;
 
 	@NotNull
 	@Column(name = ServicesModelConstant.COLUMN_PRIORITY)
@@ -88,7 +88,7 @@ public class ServicesEntity {
 	 */
 	public ServicesEntity setData(ServicesEntity data) {
 		this.title = data.getTitle();
-		this.desciption = data.getDesciption();
+		this.description = data.getDescription();
 		this.priority = data.getPriority();
 		this.providerId = data.getProviderId();
 		this.slaFixTime = data.getSlaFixTime();

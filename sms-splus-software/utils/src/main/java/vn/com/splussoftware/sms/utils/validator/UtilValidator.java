@@ -153,4 +153,24 @@ public class UtilValidator {
 		}
 	}
 
+	public static Boolean checkDuplicate(String nameNeedCheck, String name) {
+		if (nameNeedCheck.equals(name)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static Boolean checkFileSize(double fileSize, double maxSize) {
+		if (fileSize > maxSize) {
+			return true;
+		}
+		return false;
+	}
+
+	public static Boolean checkFileType(String fileType, String type) {
+		if (!fileType.equals(type)) {
+			return true;
+		}
+		return false;
+	}
 }

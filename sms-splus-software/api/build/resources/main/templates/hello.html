@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+  <script>
+		$(document).ready(function(){
+			
+			
+			
+// 			$("#token").click(function(){
+// 				var token = $("#token").val();
+// 		        alert(token);
+// 		    });
+			
+			
+		    $("#loginMethodForm").submit(function(e) {
+		    	var token = $("#token").val();
+		    	$.ajax({
+		    		type: "POST",
+		    		headers: {
+		    			"Authorization": 'bearer ' + token
+		    		},
+		    		data: $("#loginMethodForm").serialize(),
+		    		success: function(data) {
+		    			alert(data);
+		    		}
+		    	});
+		    	
+		    	e.preventDefault();
+		    });
+		});
+	</script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Login Methods</h2>            
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Login Type</th>
+        <th>URL</th>
+        <th>Priority</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="loginMethod: ${loginMethods}">
+        <td th:text="${loginMethod.loginType}"></td>
+        <td th:text="${loginMethod.url}"></td>
+        <td th:text="${loginMethod.priority}"></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+   <form id="loginMethodForm" action="#" th:action="@{/}" th:object="${loginMethodDto}" method="post">
+    	
+        <p>Login Type: <input type="text" th:field="*{loginType}" /></p>
+        <p>URL: <input type="text" th:field="*{url}" /></p>
+        <p>Priority: <input type="text" th:field="*{priority}" /></p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+    </form>
+    <input type="text" id="token"  />
+</div>
+
+</body>
+</html>

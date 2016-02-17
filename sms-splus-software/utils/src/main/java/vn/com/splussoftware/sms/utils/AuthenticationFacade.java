@@ -25,7 +25,6 @@ public class AuthenticationFacade {
 		try {
 			userDto = userService.findByUserkey(getAuthentication().getName());
 		} catch (EntityNotFoundException ex) {
-			//TODO for LDAP user, save the user's info to database
 			userDto = new UserDto();
 			userDto.setUserkey(getAuthentication().getName());
 		}

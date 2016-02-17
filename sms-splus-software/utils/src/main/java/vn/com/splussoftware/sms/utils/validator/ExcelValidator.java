@@ -1,6 +1,7 @@
 package vn.com.splussoftware.sms.utils.validator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import vn.com.splussoftware.sms.model.exception.ExcelValidatorModel;
@@ -20,6 +21,131 @@ import vn.com.splussoftware.sms.utils.service.jsonhandler.Table;
 import vn.com.splussoftware.sms.utils.service.jsonhandler.TableColumn;
 
 public class ExcelValidator {
+	public static List<ValidatorErrorModelException> checkImportExcelFormat(
+			List<ValidatorErrorModelException> errorList, DataObject baseData, DataObject dataNeedChecking) {
+		if (baseData.getElements().size() != dataNeedChecking.getElements().size()) {
+			if (baseData.getElements().size() > dataNeedChecking.getElements().size()) {
+				List<Integer> tmpList = new ArrayList<>();
+				for (int i = 0; i < baseData.getElements().size(); i++) {
+					tmpList.add(baseData.getElements().get(i).getId());
+				}
+				for (int j = 0; j < dataNeedChecking.getElements().size(); j++) {
+					if (tmpList.contains(dataNeedChecking.getElements().get(j).getId())) {
+						tmpList.remove(tmpList.indexOf(dataNeedChecking.getElements().get(j).getId()));
+					}
+				}
+				if (tmpList.size() != 0) {
+					for (int k = 0; k < tmpList.size(); k++) {
+						ValidatorErrorModelException error = new ValidatorErrorModelException();
+						error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+						error.setErrorMessage("Missing:" + baseData.getOnId(tmpList.get(k)));
+						errorList.add(error);
+					}
+
+				}
+			}
+
+		} else {
+			Collections.sort(baseData.getElements());
+			Collections.sort(dataNeedChecking.getElements());
+			for (int i = 0; i < baseData.getElements().size(); i++) {
+				if (!baseData.getElements().get(i).getDataType().trim()
+						.equals(dataNeedChecking.getElements().get(i).getDataType().trim())) {
+					ValidatorErrorModelException error = new ValidatorErrorModelException();
+					error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+					error.setErrorMessage("Wrong Datatype:" + dataNeedChecking.getElements().get(i).getId() + " - "
+							+ dataNeedChecking.getElements().get(i).getDataType() + " - "
+							+ baseData.getElements().get(i).getId() + " - "
+							+ baseData.getElements().get(i).getDataType());
+					errorList.add(error);
+				} else {
+					if (baseData.getElements().get(i).getDataType().equals("table")) {
+						Table baseTable = (Table) baseData.getElements().get(i);
+						Table checkTable = (Table) dataNeedChecking.getElements().get(i);
+						List<TableColumn> baseTableColumn = baseTable.getData().getColumns();
+						List<TableColumn> checkTableColumn = checkTable.getData().getColumns();
+						if (baseTableColumn.size() != checkTableColumn.size()) {
+							if (baseTableColumn.size() > checkTableColumn.size()) {
+								List<String> tmpList = new ArrayList<>();
+								for (int h = 0; h < baseTableColumn.size(); h++) {
+									tmpList.add(baseTableColumn.get(h).getName());
+								}
+								for (int j = 0; j < checkTableColumn.size(); j++) {
+									if (tmpList.contains(checkTableColumn.get(j).getName())) {
+										tmpList.remove(checkTableColumn.get(j).getName());
+									}
+								}
+								if (tmpList.size() != 0) {
+									for (int k = 0; k < tmpList.size(); k++) {
+										ValidatorErrorModelException error = new ValidatorErrorModelException();
+										error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+										error.setErrorMessage("Missing:" + tmpList.get(k));
+										errorList.add(error);
+									}
+
+								}
+							}
+						}
+					}
+					if (baseData.getElements().get(i).getDataType().equals("matrix")) {
+						Matrix baseMatrix = (Matrix) baseData.getElements().get(i);
+						Matrix checkMatrix = (Matrix) dataNeedChecking.getElements().get(i);
+						List<MatrixColumnRow> baseMatrixColumn = baseMatrix.getData().getColumns();
+						List<MatrixColumnRow> checkMatrixColumn = checkMatrix.getData().getColumns();
+						List<MatrixColumnRow> baseMatrixRow = baseMatrix.getData().getRows();
+						List<MatrixColumnRow> checkMatrixRow = checkMatrix.getData().getRows();
+						if (baseMatrixColumn.size() != checkMatrixColumn.size()) {
+							if (baseMatrixColumn.size() > checkMatrixColumn.size()) {
+								List<String> tmpList = new ArrayList<>();
+								for (int h = 0; h < baseMatrixColumn.size(); h++) {
+									tmpList.add(baseMatrixColumn.get(h).getName());
+								}
+								for (int j = 0; j < checkMatrixColumn.size(); j++) {
+									if (tmpList.contains(checkMatrixColumn.get(j).getName())) {
+										tmpList.remove(checkMatrixColumn.get(j).getName());
+									}
+								}
+								if (tmpList.size() != 0) {
+									for (int k = 0; k < tmpList.size(); k++) {
+										ValidatorErrorModelException error = new ValidatorErrorModelException();
+										error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+										error.setErrorMessage("Missing:" + tmpList.get(k));
+										errorList.add(error);
+									}
+
+								}
+							}
+						}
+						if (baseMatrixRow.size() != checkMatrixRow.size()) {
+							if (baseMatrixRow.size() > checkMatrixRow.size()) {
+								List<String> tmpList = new ArrayList<>();
+								for (int h = 0; h < baseMatrixRow.size(); h++) {
+									tmpList.add(baseMatrixRow.get(h).getName());
+								}
+								for (int j = 0; j < checkMatrixRow.size(); j++) {
+									if (tmpList.contains(checkMatrixRow.get(j).getName())) {
+										tmpList.remove(checkMatrixRow.get(j).getName());
+									}
+								}
+								if (tmpList.size() != 0) {
+									for (int k = 0; k < tmpList.size(); k++) {
+										ValidatorErrorModelException error = new ValidatorErrorModelException();
+										error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+										error.setErrorMessage("Missing:" + tmpList.get(k));
+										errorList.add(error);
+									}
+
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		return errorList;
+	}
+
 	public static List<ValidatorErrorModelException> checkImportExcelData(List<ValidatorErrorModelException> errorList,
 			DataObject baseData, List<ExcelValidatorModel> dataNeedChecking) {
 		ValidatorErrorModelException check = new ValidatorErrorModelException();
@@ -30,11 +156,9 @@ public class ExcelValidator {
 		List<MatrixColumnRow> baseMatrixRow = new ArrayList<>();
 		List<ElementData> listElement = baseData.getElements();
 
-
 		for (int i = 0; i < dataNeedChecking.size(); i++) {
 			ExcelValidatorModel model = dataNeedChecking.get(i);
 			System.out.println(model.getType() + " - " + model.getRow() + " - " + model.getColumn());
-
 			switch (model.getType()) {
 			case "individual":
 
@@ -102,8 +226,8 @@ public class ExcelValidator {
 						Matrix baseMatrix = (Matrix) listElement.get(j);
 						baseMatrixValue = baseMatrix.getData().getValues();
 						for (int k = 0; k < baseMatrixValue.size(); k++) {
-							if (baseMatrixValue.get(k).getColumnId() - baseMatrixValue.get(k).getRowId() == matrixModel
-									.getId()) {
+							if (baseMatrixValue.get(k).getColumnId() == matrixModel.getColumnId()
+									&& baseMatrixValue.get(k).getRowId() == matrixModel.getRowId()) {
 								Condition matrixCondition = baseMatrixValue.get(k).getConditions();
 								check = ExcelValidator.validateOnType(matrixCondition, matrixModel.getValue(),
 										baseMatrixValue.get(k).getType(), matrixModel.getRow(),
@@ -126,7 +250,7 @@ public class ExcelValidator {
 						Matrix baseMatrix = (Matrix) listElement.get(j);
 						baseMatrixColumn = baseMatrix.getData().getColumns();
 						for (int k = 0; k < baseMatrixColumn.size(); k++) {
-							if (baseMatrixColumn.get(k).getId() == matrixHeaderModel.getId()) {
+							if (baseMatrixColumn.get(k).getId() == matrixHeaderModel.getColumnId()) {
 								check = ExcelValidator.checkHeader(baseMatrixColumn.get(k).getName(),
 										matrixHeaderModel.getValue(), matrixHeaderModel.getRow(),
 										matrixHeaderModel.getColumn());
@@ -147,9 +271,10 @@ public class ExcelValidator {
 				for (int j = 0; j < listElement.size(); j++) {
 					if (listElement.get(j).getId() == matrixRowHeaderModel.getElementId()) {
 						Matrix baseMatrix = (Matrix) listElement.get(j);
-						baseMatrixRow = baseMatrix.getData().getColumns();
-						for (int k = 0; k < baseMatrixColumn.size(); k++) {
-							if (baseMatrixRow.get(k).getId() == matrixRowHeaderModel.getId()) {
+						baseMatrixRow = baseMatrix.getData().getRows();
+						for (int k = 0; k < baseMatrixRow.size(); k++) {
+							if (baseMatrixRow.get(k).getId() == matrixRowHeaderModel.getRowId()) {
+
 								check = ExcelValidator.checkHeader(baseMatrixRow.get(k).getName(),
 										matrixRowHeaderModel.getValue(), matrixRowHeaderModel.getRow(),
 										matrixRowHeaderModel.getColumn());
@@ -218,7 +343,10 @@ public class ExcelValidator {
 
 			break;
 		case "textarea":
-
+			if (!UtilValidator.checkMaxLength(stringNeedCheck, condition.getMax_length())) {
+				error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
+				error.setErrorMessage(ExcelValidatorConstant.ERROR_TEXT_LENGTH + row + column);
+			}
 			break;
 		default:
 			break;

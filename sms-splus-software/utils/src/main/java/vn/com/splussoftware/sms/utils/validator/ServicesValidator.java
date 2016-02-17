@@ -55,7 +55,7 @@ public class ServicesValidator {
 			errorList.add(error);
 		}
 
-		if (UtilValidator.checkObjectIsNull(dataService.getDesciption())) { // check 
+		if (UtilValidator.checkObjectIsNull(dataService.getDescription())) { // check 
 			// DESCRIPTION kietlt 3:30 PM 2016/1/27
 			ValidatorErrorModelException error = new ValidatorErrorModelException();
 			error.setErrorCode(UtilValidatorConstant.ERROR_CODE_NULL);
@@ -147,7 +147,7 @@ public class ServicesValidator {
 			errorList.add(error);
 		}
 
-		if (UtilValidator.checkMaxSizeText(dataService.getDesciption())) { // check
+		if (UtilValidator.checkMaxSizeText(dataService.getDescription())) { // check
 																			// description kietlt 3:30 PM 2016/1/27
 			ValidatorErrorModelException error = new ValidatorErrorModelException();
 			error.setErrorCode(UtilValidatorConstant.ERROR_CODE_LENGTH);

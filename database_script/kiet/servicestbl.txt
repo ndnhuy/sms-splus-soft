@@ -1,0 +1,25 @@
+﻿
+DROP TABLE IF EXISTS servicestbl;
+
+CREATE TABLE servicestbl
+(
+  id serial NOT NULL,
+  title character varying(255) NOT NULL,
+  desciption text NOT NULL,
+  priority integer NOT NULL,
+  providerid integer NOT NULL,
+  slaresponse numeric NOT NULL,
+  slaimplement numeric NOT NULL,
+  slafix numeric NOT NULL,
+  createtime date NOT NULL,
+  createby text NOT NULL,
+  modifiedtime date NOT NULL,
+  modified text NOT NULL,
+  isactive boolean NOT NULL,
+  CONSTRAINT servicestbl_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE servicestbl
+  OWNER TO postgres;

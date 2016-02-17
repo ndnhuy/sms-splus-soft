@@ -1,0 +1,65 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+</head>
+<body>
+	<form action="moveToUpload" method="POST" enctype="multipart/form-data">
+		<div class="fileUpload btn btn-primary">
+			<span>Choose your file:</span> <input id="file" name="file"
+				type="file" class="upload" required="required" multiple="multiple"
+				accept=".xls,.xlsx" />
+			<button class="btnSubmit" type="submit">Submit!</button>
+		</div>
+	</form>
+
+
+	<hr />
+	<style>
+span {
+	width: 200px;
+	display: inline-block;
+	margin: 10px;
+	text-align: center;
+}
+</style>
+	<script  th:inline="javascript">
+		$(document).ready(function() {
+
+			$(".upload").change(function() {
+
+				
+
+				var data = new FormData();
+				$.each($('#file').prop("files"), function(k, v) {
+					var filename = v['name'];
+					data.append('name', filename);
+					// filename = "blahblah.jpg", without path
+				});
+
+				jQuery.each(jQuery('#file')[0].files, function(i, file) {
+					data.append('file', file);
+				});
+				
+				jQuery.ajax({
+					url : 'uploadToTemp',
+					data : data,
+					cache : false,
+					contentType : false,
+					processData : false,
+					type : 'POST',
+					success : function(data) {
+						alert(data);
+					}
+				});
+
+			})
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+DROP TABLE IF EXISTS DataTemplateTbl;
+CREATE TABLE DataTemplateTbl
+(
+ID SERIAL,
+Type TEXT,
+Template TEXT,
+CreatedBy TEXT,
+CreatedTime timestamp,
+ModifiedBy TEXT,
+ModifiedTime timestamp,
+PRIMARY KEY (ID) 
+);
+DROP TABLE IF EXISTS TicketInfoTbl;
+CREATE TABLE TicketInfoTbl
+(
+ID SERIAL,
+Value TEXT,
+ValueType TEXT,
+Conditions TEXT,
+DataType TEXT,
+DataTemplateID int,
+DataTemplateRowID int,
+DataTemplateColumnID int,
+TicketID int,
+RelationshipID int,
+PRIMARY KEY (ID) 
+);
+DROP TABLE IF EXISTS TicketTbl;
+CREATE TABLE TicketTbl
+(
+ID SERIAL,
+ServiceID int,
+ProcessID int,
+Status TEXT,
+Input TEXT,
+Output TEXT,
+Workflow TEXT,
+Rating TEXT,
+SLAResponse TEXT,
+SLAImplement TEXT,
+SLAFix TEXT,
+CreatedBy TEXT,
+CreatedTime timestamp,
+ModifiedBy TEXT,
+ModifiedTime timestamp,
+PRIMARY KEY (ID) 
+);
+
+DROP TABLE IF EXISTS TicketTimeTbl;
+CREATE TABLE TicketTimeTbl(
+   ID SERIAL,
+   TicketID INT,
+   ResponseTime TIMESTAMP,
+   ImplementTime TIMESTAMP,
+   FixTime TIMESTAMP,
+   Owner TEXT,
+   PRIMARY KEY(ID)
+);
+
+DROP TABLE IF EXISTS EntitiesRoleTbl;
+CREATE TABLE EntitiesRoleTbl(
+ID SERIAL,
+EntityType TEXT,
+EntityID INT,
+UserKey TEXT,
+Role TEXT,
+ PRIMARY KEY(ID)
+);
+
+
+DROP TABLE IF EXISTS PhaseTimeTbl;
+CREATE TABLE PhaseTimeTbl(
+ID SERIAL,
+PhaseID INT,
+ResponseTime TIMESTAMP,
+   ImplementTime TIMESTAMP,
+   FixTime TIMESTAMP,
+   Owner TEXT,
+   PRIMARY KEY(ID)
+);
+
+
+DROP TABLE IF EXISTS PhaseTbl;
+CREATE TABLE PhaseTbl(
+ID SERIAL,
+TicketID INT,
+Status TEXT,
+   Type TEXT,
+   DisplayAttribute TEXT,
+   PRIMARY KEY(ID)
+);
+
+DROP TABLE IF EXISTS RelationshipTbl;
+CREATE TABLE RelationshipTbl(
+ID SERIAL,
+Type INT,
+Status TEXT,
+   TicketID INT,
+   FromPhaseID INT,
+   ToPhaseID INT,
+   Information TEXT,
+   PRIMARY KEY(ID)
+);

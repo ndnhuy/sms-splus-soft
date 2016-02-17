@@ -27,5 +27,8 @@ public class DraftingServiceUtils {
 		repository.delete(draft);
 		return;
 	}
+	public String getJson(int draftid){
+		return repository.getOne(draftid).getDraftcontent();
+	}
 	
 }

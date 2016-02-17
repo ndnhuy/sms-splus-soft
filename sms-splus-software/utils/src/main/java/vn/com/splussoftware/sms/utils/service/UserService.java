@@ -8,5 +8,6 @@ public interface UserService {
 	
 	List<UserDto> findAll();
 	UserDto findByUserkey(String userkey);
+	UserDto findByUserkeyAndLoginMethodUrl(String userkey, String loginMethodUrl);
 	UserDto add(UserDto userDto);
 }

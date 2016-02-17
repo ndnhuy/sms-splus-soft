@@ -2,7 +2,6 @@ package vn.com.splussoftware.sms.api.common.exception;
 
 import java.util.Enumeration;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;

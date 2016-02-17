@@ -25,8 +25,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataValidation;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddressList;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,8 +50,12 @@ import vn.com.splussoftware.sms.utils.service.jsonhandler.TableData;
 import vn.com.splussoftware.sms.utils.service.jsonhandler.TableValue;
 import vn.com.splussoftware.sms.utils.validator.ExcelValidator;
 
-@RestController
+@Controller
 public class ExcelService {
+	@RequestMapping("/upload")
+	public String upload() {
+		return "upload";
+	}
 
 	@RequestMapping("/import")
 	public String importExcel() throws IOException {
@@ -61,7 +65,7 @@ public class ExcelService {
 		FileInputStream file = new FileInputStream(new File("Json.xls"));
 
 		// BuuPV: 20160121 [JSON String for test]
-		String json = "{\"elements\":[{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-1,\"position\":1,\"data\":{\"value\":\"troi oi\",\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}}},{\"dataType\":\"individual\",\"name\":\"Testing\",\"id\":-4,\"position\":4,\"data\":{\"value\":\"troi oi\",\"type\":\"text\",\"conditions\":{\"required\":false,\"min-length\":5,\"max-length\":1000}}},{\"dataType\":\"table\",\"name\":\"Table Information Of Ticket\",\"id\":-2,\"position\":2,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"min\":1,\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"type\":\"select\",\"position\":5,\"id\":-5,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-1,\"row\":1,\"value\":\"cot 1\",\"conditions\":{}},{\"columnId\":-3,\"row\":2,\"value\":\"cot 2\",\"conditions\":{}},{\"columnId\":-5,\"row\":3,\"value\":\"cot 3\",\"conditions\":{}}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Ticket\",\"id\":-3,\"position\":3,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"xong roi\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"06/05/1995\",\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}},\"type\":\"date\"}]}}]}";
+		String json = "{\"elements\":[{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-1,\"position\":1,\"data\":{\"value\":\"thu\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]}}},{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-4,\"position\":4,\"data\":{\"value\":\"coi\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]}}},{\"dataType\":\"table\",\"name\":\"Table Information Of Service\",\"id\":-5,\"position\":5,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"position\":5,\"id\":-5,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-3,\"row\":1,\"value\":\"cot 3 dong 1\"},{\"columnId\":-1,\"row\":2,\"value\":\"cot 1 dong 2\"},{\"columnId\":-2,\"row\":3,\"value\":\"cot 2 dong 3\"},{\"columnId\":-4,\"row\":3,\"value\":\"cot 4 dong 3\"},{\"columnId\":-5,\"row\":2,\"value\":\"cot 5 dong 2\"},{\"columnId\":-7,\"row\":1,\"value\":\"cot 7 dong 1\"},{\"columnId\":-7,\"row\":2,\"value\":\"cot 7 dong 2\"}]}},{\"dataType\":\"table\",\"name\":\"Table Information Of Ticket\",\"id\":-2,\"position\":2,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"position\":5,\"id\":-5,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-3,\"row\":1,\"value\":\"cot 3 dong 1\"},{\"columnId\":-1,\"row\":2,\"value\":\"cot 1 dong 2\"},{\"columnId\":-2,\"row\":3,\"value\":\"cot 2 dong 3\"},{\"columnId\":-4,\"row\":3,\"value\":\"cot 4 dong 3\"},{\"columnId\":-5,\"row\":2,\"value\":\"cot 5 dong 2\"},{\"columnId\":-7,\"row\":1,\"value\":\"cot 7 dong 1\"},{\"columnId\":-7,\"row\":2,\"value\":\"cot 7 dong 2\"}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Ticket\",\"id\":-3,\"position\":3,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"dong 1 1\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-2,\"rowId\":-1,\"value\":\"dong 2 1\",\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}},\"type\":\"date\"},{\"columnId\":-3,\"rowId\":-1,\"value\":\"dong 3 1\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"type\":\"select\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"dong 1 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-2,\"value\":\"dong 2 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-3,\"rowId\":-2,\"value\":\"dong 3 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-1,\"rowId\":-3,\"value\":\"dong 1 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-3,\"value\":\"dong 2 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Service\",\"id\":-6,\"position\":6,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"dong 1 1\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-2,\"rowId\":-1,\"value\":\"dong 2 1\",\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}},\"type\":\"date\"},{\"columnId\":-3,\"rowId\":-1,\"value\":\"dong 3 1\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"type\":\"select\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"dong 1 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-2,\"value\":\"dong 2 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-3,\"rowId\":-2,\"value\":\"dong 3 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-1,\"rowId\":-3,\"value\":\"dong 1 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-3,\"value\":\"dong 2 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"}]}}]}";
 
 		// BuuPV: 20160121 [Convert String to Data Object[
 		GsonBuilder gsonBilder = new GsonBuilder();
@@ -248,7 +252,7 @@ public class ExcelService {
 
 										MatrixValidatorModel validateCell3 = new MatrixValidatorModel();
 										validateCell3.setElementId(elementId2);
-										validateCell3.setId((c.getColumnIndex() - 2) * -1);
+										validateCell3.setColumnId((c.getColumnIndex() - 2) * -1);
 										validateCell3.setRow(c.getRowIndex() + 1);
 										validateCell3
 												.setColumn(CellReference.convertNumToColString(c.getColumnIndex()));
@@ -284,7 +288,7 @@ public class ExcelService {
 
 										MatrixValidatorModel validateCell3 = new MatrixValidatorModel();
 										validateCell3.setElementId(elementId2);
-										validateCell3.setId((c.getRowIndex() - 11) * -1);
+										validateCell3.setRowId((c.getRowIndex() - 11) * -1);
 										validateCell3.setRow(c.getRowIndex() + 1);
 										validateCell3
 												.setColumn(CellReference.convertNumToColString(c.getColumnIndex()));
@@ -324,8 +328,8 @@ public class ExcelService {
 											// Data
 											MatrixValidatorModel validateCell3 = new MatrixValidatorModel();
 											validateCell3.setElementId(elementId2);
-											validateCell3.setId(
-													(c.getColumnIndex() - 2) * -1 - ((c.getRowIndex() - 11) * -1));
+											validateCell3.setRowId(((c.getRowIndex() - 11) * -1));
+											validateCell3.setColumnId((c.getColumnIndex() - 2) * -1);
 											validateCell3.setRow(c.getRowIndex() + 1);
 											validateCell3
 													.setColumn(CellReference.convertNumToColString(c.getColumnIndex()));
@@ -356,6 +360,9 @@ public class ExcelService {
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(dataObject));
 
+		// Check size
+		ExcelValidator.checkImportExcelFormat(errorList, vc, dataObject);
+
 		// BuuPV: 20160129 Test function
 		ExcelValidator.checkImportExcelData(errorList, vc, listValidateCell);
 		for (ValidatorErrorModelException error : errorList) {
@@ -366,14 +373,14 @@ public class ExcelService {
 		}
 		// Get iterator to all cells of current row
 		// Iterator<Cell> cellIterator = row.cellIterator();
-		return "import";
+		return "upload";
 	}
 
 	@RequestMapping("/export")
 	public String export(HttpServletResponse response) throws IOException {
 		int hide = 0;
 		// BuuPV: 20160121 [JSON String for test]
-		String json = "{\"elements\":[{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-1,\"position\":1,\"data\":{\"value\":\"\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]}}},{\"dataType\":\"table\",\"name\":\"Table Information Of Ticket\",\"id\":-2,\"position\":2,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"position\":5,\"id\":-5,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-3,\"row\":1,\"value\":\"\"},{\"columnId\":-7,\"row\":2,\"value\":\"sd\"}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Ticket\",\"id\":-3,\"position\":3,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"asdasd\",\"condition\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"asd\",\"conditions\":{},\"type\":\"date\"}]}}]}";
+		String json = "{\"elements\":[{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-1,\"position\":1,\"data\":{\"value\":\"thu\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]}}},{\"dataType\":\"individual\",\"name\":\"Link to Employees Picture Folder\",\"id\":-4,\"position\":4,\"data\":{\"value\":\"coi\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]}}},{\"dataType\":\"table\",\"name\":\"Table Information Of Service\",\"id\":-5,\"position\":5,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"position\":5,\"id\":-5,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-3,\"row\":1,\"value\":\"cot 3 dong 1\"},{\"columnId\":-1,\"row\":2,\"value\":\"cot 1 dong 2\"},{\"columnId\":-2,\"row\":3,\"value\":\"cot 2 dong 3\"},{\"columnId\":-4,\"row\":3,\"value\":\"cot 4 dong 3\"},{\"columnId\":-5,\"row\":2,\"value\":\"cot 5 dong 2\"},{\"columnId\":-7,\"row\":1,\"value\":\"cot 7 dong 1\"},{\"columnId\":-7,\"row\":2,\"value\":\"cot 7 dong 2\"}]}},{\"dataType\":\"table\",\"name\":\"Table Information Of Ticket\",\"id\":-2,\"position\":2,\"data\":{\"columns\":[{\"name\":\"No.\",\"type\":\"number\",\"id\":-1,\"position\":1,\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Fullname\",\"type\":\"text\",\"position\":2,\"id\":-2,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255}},{\"name\":\"Gender\",\"type\":\"select\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"position\":3,\"id\":-3},{\"name\":\"Parent Department\",\"position\":4,\"id\":-4,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Child Department\",\"position\":5,\"id\":-5,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Job\",\"position\":6,\"id\":-6,\"type\":\"text\",\"conditions\":{\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Contract Type\",\"type\":\"select\",\"id\":-7,\"position\":7,\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Probation Contract\",\"value\":\"Probation Contract\"},{\"text\":\"Labor contract follow a certain job to have duration less than 12 months\",\"value\":\"Labor contract follow a certain job to have duration less than 12 months\"},{\"text\":\"Definite-term Labor contract\",\"value\":\"Definite-term Labor contract\"},{\"text\":\"Indefinite-term Labor contract\",\"value\":\"Indefinite-term Labor contract\"},{\"text\":\"Seasonal Contract\",\"value\":\"Seasonal Contract\"},{\"text\":\"Fresher Training Contract\",\"value\":\"Fresher Training Contract\"},{\"text\":\"Intern Training Contract\",\"value\":\"Intern Training Contract\"},{\"text\":\"Service Contract\",\"value\":\"Service Contract\"},{\"text\":\"Vender Contract\",\"value\":\"Vender Contract\"},{\"text\":\"Internship\",\"value\":\"Internship\"},{\"text\":\"Customer\",\"value\":\"Customer\"},{\"text\":\"Other\",\"value\":\"Other\"}],\"required\":true,\"min-length\":1,\"max-length\":255}},{\"name\":\"Start date\",\"type\":\"date\",\"position\":8,\"id\":-8,\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"End date\",\"type\":\"date\",\"position\":9,\"id\":-9,\"conditions\":{\"required\":false,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}}},{\"name\":\"Account\",\"type\":\"text\",\"position\":10,\"id\":-10,\"conditions\":{}},{\"name\":\"Add To Group\",\"type\":\"text\",\"position\":11,\"id\":-11,\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":1000}},{\"name\":\"Note\",\"type\":\"textarea\",\"position\":12,\"id\":-12,\"conditions\":{\"max-length\":1000}}],\"values\":[{\"columnId\":-3,\"row\":1,\"value\":\"cot 3 dong 1\"},{\"columnId\":-1,\"row\":2,\"value\":\"cot 1 dong 2\"},{\"columnId\":-2,\"row\":3,\"value\":\"cot 2 dong 3\"},{\"columnId\":-4,\"row\":3,\"value\":\"cot 4 dong 3\"},{\"columnId\":-5,\"row\":2,\"value\":\"cot 5 dong 2\"},{\"columnId\":-7,\"row\":1,\"value\":\"cot 7 dong 1\"},{\"columnId\":-7,\"row\":2,\"value\":\"cot 7 dong 2\"}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Ticket\",\"id\":-3,\"position\":3,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"dong 1 1\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-2,\"rowId\":-1,\"value\":\"dong 2 1\",\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}},\"type\":\"date\"},{\"columnId\":-3,\"rowId\":-1,\"value\":\"dong 3 1\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"type\":\"select\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"dong 1 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-2,\"value\":\"dong 2 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-3,\"rowId\":-2,\"value\":\"dong 3 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-1,\"rowId\":-3,\"value\":\"dong 1 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-3,\"value\":\"dong 2 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"}]}},{\"dataType\":\"matrix\",\"name\":\"Matrix Information Of Service\",\"id\":-6,\"position\":6,\"data\":{\"columns\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"rows\":[{\"name\":\"No.\",\"id\":-1,\"position\":1},{\"name\":\"Fullname\",\"position\":2,\"id\":-2},{\"name\":\"Gender\",\"position\":3,\"id\":-3}],\"values\":[{\"columnId\":-1,\"rowId\":-1,\"value\":\"dong 1 1\",\"conditions\":{\"required\":true,\"min-length\":5,\"max-length\":255},\"type\":\"text\"},{\"columnId\":-2,\"rowId\":-1,\"value\":\"dong 2 1\",\"conditions\":{\"required\":true,\"format\":{\"text\":\"Please input dd/MM/yyyy\",\"regex\":\"dd/MM/yyyy\"}},\"type\":\"date\"},{\"columnId\":-3,\"rowId\":-1,\"value\":\"dong 3 1\",\"conditions\":{\"multiple\":false,\"data\":[{\"text\":\"Male\",\"value\":\"Male\"},{\"text\":\"Female\",\"value\":\"Female\"}]},\"type\":\"select\"},{\"columnId\":-1,\"rowId\":-2,\"value\":\"dong 1 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-2,\"value\":\"dong 2 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-3,\"rowId\":-2,\"value\":\"dong 3 2\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-1,\"rowId\":-3,\"value\":\"dong 1 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"},{\"columnId\":-2,\"rowId\":-3,\"value\":\"dong 2 3\",\"conditions\":{\"format\":{\"text\":\"Please input an number!\",\"regex\":\"([0-9]*)\"},\"required\":true,\"min-length\":1,\"max-length\":255},\"type\":\"number\"}]}}]}";
 
 		// BuuPV: 20160121 [Convert String to Data Object[
 		GsonBuilder gsonBilder = new GsonBuilder();
@@ -421,8 +428,44 @@ public class ExcelService {
 				HSSFCellStyle cellStyle = workbook.createCellStyle();
 				switch (individual.getData().getType()) {
 				case "text":
+				case "textarea":
 					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("@"));
 					break;
+
+				case "number":
+					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
+					break;
+				case "date":
+					cellStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("d-mmm-yy"));
+					break;
+				case "select":
+					List<String> selection = individual.getData().getConditions().getSelectData();
+					String[] array = new String[selection.size()];
+					for (int i = 0; i < selection.size(); i++)
+						array[i] = selection.get(i);
+
+					String sheetName = individual.getData().getValue().replaceAll(" ", "_");
+					if (workbook.getSheet(sheetName) == null) {
+						hidden = workbook.createSheet(sheetName);
+						hide++;
+					} else {
+						hidden = workbook.getSheet(sheetName);
+					}
+					for (int i = 0, length = array.length; i < length; i++) {
+						String name = array[i];
+						HSSFRow rowSelect = hidden.createRow(i);
+						HSSFCell cellSelect = rowSelect.createCell(0);
+						cellSelect.setCellValue(name);
+					}
+					CellRangeAddressList addressList = new CellRangeAddressList(cell.getRowIndex(), cell.getRowIndex(),
+							cell.getColumnIndex(), cell.getColumnIndex());
+					DVConstraint dvConstraint = DVConstraint
+							.createFormulaListConstraint(sheetName + "!$A$1:$A$" + array.length);
+					DataValidation dataValidation = new HSSFDataValidation(addressList, dvConstraint);
+					dataValidation.setSuppressDropDownArrow(false);
+					worksheet.addValidationData(dataValidation);
+					break;
+
 				}
 				// BuuPV: 20160122 Write Data
 				cell.setCellStyle(cellStyle);
@@ -516,6 +559,7 @@ public class ExcelService {
 							currentRow = key;
 						}
 						for (Integer key2 : rowData.keySet()) {
+							System.out.println(key + " - " + key2);
 							cell = row.createCell(b + key2);
 							HSSFCellStyle cellStyle2 = workbook.createCellStyle();
 
@@ -525,6 +569,7 @@ public class ExcelService {
 								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("d-mmm-yy"));
 								break;
 							case "text":
+							case "textarea":
 								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("@"));
 								break;
 							case "number":
@@ -625,53 +670,83 @@ public class ExcelService {
 				row = worksheet.createRow(worksheet.getLastRowNum() + 1);
 				int e = 2;
 				matrixCurrentRow = 1;
+				int count = 0;
 				for (HashMap<Integer, HashMap<Integer, String>> tmpRowData : matrixRowMap) {
 					for (Integer key : tmpRowData.keySet()) {
 						HashMap<Integer, String> rowData = tmpRowData.get(key);
-
-						for (Integer key2 : rowData.keySet()) {
-							cell = row.createCell(e + key2);
-
-							// Validator
-							HSSFCellStyle cellStyle2 = workbook.createCellStyle();
-							switch (listMatrixValue.get(key - 1).getType()) {
-							case "date":
-								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("d-mmm-yy"));
-								break;
-							case "text":
-								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("@"));
-
-								break;
-							case "number":
-								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
-								break;
-							case "select":
-								CellRangeAddressList addressList = new CellRangeAddressList(cell.getRowIndex(),
-										cell.getRowIndex(), cell.getColumnIndex(), cell.getColumnIndex());
-								DVConstraint dvConstraint = DVConstraint
-										.createExplicitListConstraint(new String[] { "Male", "Female" });
-								DataValidation dataValidation = new HSSFDataValidation(addressList, dvConstraint);
-								dataValidation.setSuppressDropDownArrow(false);
-								worksheet.addValidationData(dataValidation);
-								break;
-							}
-							// Write Data
-
-							cell.setCellStyle(cellStyle2);
-							cell.setCellValue(rowData.get(key2));
-						}
 						if (matrixCurrentRow == key) {
 
 							for (MatrixColumnRow matrixRow : listMatrixRow) {
 								if (matrixRow.getId() * -1 == key) {
 									cell = row.createCell(2);
 									cell.setCellValue(matrixRow.getName());
-									matrixCurrentRow++;
 								}
 							}
-							// currentRow = key;
 						}
-						row = worksheet.createRow(worksheet.getLastRowNum() + 1);
+						if (matrixCurrentRow < key) {
+
+							row = worksheet.createRow(worksheet.getLastRowNum() + 1);
+							matrixCurrentRow = key;
+						}
+
+						for (Integer key2 : rowData.keySet()) {
+							if (count == 0) {
+								count = key2 - 1;
+							} else
+								count++;
+							System.out.println(key + " - " + key2);
+							cell = row.createCell(e + key2);
+							HSSFCellStyle cellStyle2 = workbook.createCellStyle();
+
+							// BuuPV: 20160124 Create Cell Style
+							System.out.println(listMatrixValue.get(count).getColumnId() + " - "
+									+ listMatrixValue.get(count).getRowId() + " - "
+									+ listMatrixValue.get(count).getType());
+							switch (listMatrixValue.get(count).getType()) {
+							case "date":
+								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("d-mmm-yy"));
+								break;
+							case "text":
+							case "textarea":
+								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("@"));
+								break;
+							case "number":
+								cellStyle2.setDataFormat(HSSFDataFormat.getBuiltinFormat("0"));
+								break;
+							case "select":
+								List<String> selection = listMatrixValue.get(count).getConditions().getSelectData();
+								System.out.println(listMatrixValue.get(count).getColumnId() + " - "
+										+ listMatrixValue.get(count).getRowId() + selection.size());
+								String[] array = new String[selection.size()];
+								for (int i = 0; i < selection.size(); i++)
+									array[i] = selection.get(i);
+
+								String sheetName = listMatrixValue.get(count).getValue().replaceAll(" ", "_");
+								if (workbook.getSheet(sheetName) == null) {
+									hidden = workbook.createSheet(sheetName);
+									hide++;
+								} else {
+									hidden = workbook.getSheet(sheetName);
+								}
+								for (int i = 0, length = array.length; i < length; i++) {
+									String name = array[i];
+									HSSFRow rowSelect = hidden.createRow(i);
+									HSSFCell cellSelect = rowSelect.createCell(0);
+									cellSelect.setCellValue(name);
+								}
+								CellRangeAddressList addressList = new CellRangeAddressList(cell.getRowIndex(),
+										cell.getRowIndex(), cell.getColumnIndex(), cell.getColumnIndex());
+								DVConstraint dvConstraint = DVConstraint
+										.createFormulaListConstraint(sheetName + "!$A$1:$A$" + array.length);
+								DataValidation dataValidation = new HSSFDataValidation(addressList, dvConstraint);
+								dataValidation.setSuppressDropDownArrow(false);
+								worksheet.addValidationData(dataValidation);
+								break;
+							}
+							cell.setCellStyle(cellStyle2);
+							cell.setCellValue(rowData.get(key2));
+
+						}
 					}
 
 				}

@@ -15,4 +15,5 @@ public class ExcelValidatorConstant {
 	public static String ERROR_SELECT_DATA = "Invalid data:";
 	public static String ERROR_TEXT_NULL = "Null:";
 	public static String ERROR_HEADER = "Invalid Header:";
+	public static String ERROR_FORMAT = "Invalid Format";
 }

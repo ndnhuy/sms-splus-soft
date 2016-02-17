@@ -23,6 +23,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
+
 public class OAuthTokenHelper {
 	private static final Logger logger = LoggerFactory.getLogger(OAuthTokenHelper.class);
 	
@@ -63,7 +65,7 @@ public class OAuthTokenHelper {
 			
 		});
 		
-		HttpEntity<String> response = restTemplate.exchange("http://localhost:8182/oauth/token", HttpMethod.POST, entity, String.class);
+		HttpEntity<String> response = restTemplate.exchange(AuthenticationConstant.SERVER_URL + "/oauth/token", HttpMethod.POST, entity, String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -90,7 +92,7 @@ public class OAuthTokenHelper {
 		
 		restTemplate.setErrorHandler(responseHandlerError);
 		
-		HttpEntity<String> response = restTemplate.exchange("http://localhost:8182/oauth/token", HttpMethod.POST, entity, String.class);
+		HttpEntity<String> response = restTemplate.exchange(AuthenticationConstant.SERVER_URL + "/oauth/token", HttpMethod.POST, entity, String.class);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<String, Object>();

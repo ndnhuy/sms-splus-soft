@@ -20,21 +20,22 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import vn.com.splussoftware.sms.api.service.UserApiService;
-import vn.com.splussoftware.sms.model.entity.login.GlobalPermissionEntity;
-import vn.com.splussoftware.sms.model.entity.login.SMSUserEntity;
+import vn.com.splussoftware.sms.model.entity.auth.GlobalPermissionEntity;
+import vn.com.splussoftware.sms.model.entity.auth.SMSUserEntity;
 import vn.com.splussoftware.sms.model.exception.LdapAuthenticationException;
-import vn.com.splussoftware.sms.model.repository.login.UserRepository;
+import vn.com.splussoftware.sms.model.repository.auth.UserRepository;
 import vn.com.splussoftware.sms.utils.constant.LoginMethodTypeConstant;
 import vn.com.splussoftware.sms.utils.dto.LoginMethodDto;
 import vn.com.splussoftware.sms.utils.service.LoginMethodService;
 import vn.com.splussoftware.sms.utils.validator.LDAPHelper;
 
-//TODO add comment here
+
 /**
  * 
+ * Loading user by username for authenticating.
+ *
  * @author HuyNDN
  * 
- * @see src/main/resources/application.yml
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -49,6 +50,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private LoginMethodService loginMethodService;
+	
+	@Autowired
+	private LDAPHelper ldapHelper;
 
 
 	
@@ -60,7 +64,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		logger.debug("Load user by username for authenticating");
 		
-		// Get all login-methods from database and sorting by priority (decreasing)
+		// Loading all LoginMethods and sorting them by decreasing priority
 		List<LoginMethodDto> dtoLoginMethods = loginMethodService.findAllByOrderByPriorityDesc();
 		if (dtoLoginMethods == null || dtoLoginMethods.isEmpty()) {
 			
@@ -70,25 +74,39 @@ public class CustomUserDetailsService implements UserDetailsService {
 			throw ex;
 		}
 		
-		SMSUserEntity user = null;
+		UserDetails user = authenticateUserForEachOfLoginMethodsOrderdByDecreasingPriority(username, dtoLoginMethods);
+		if (user == null) {
+			throw new UsernameNotFoundException("User '" + username + "' not found");
+		}
 		
+		return user;
+	}
+	
+
+	private UserDetails authenticateUserForEachOfLoginMethodsOrderdByDecreasingPriority(String username,
+			List<LoginMethodDto> dtoLoginMethods) {
+		
+		SMSUserEntity user = null;
 		for (LoginMethodDto dto : dtoLoginMethods) {
+			// Using username to authenticate user for each of login methods
 			switch (dto.getLoginType()) {
 			case LoginMethodTypeConstant.LOGIN_METHOD_TYPE_NORMAL:
 				
-				logger.debug("Authenticating username/password for login-method-type {}", LoginMethodTypeConstant.LOGIN_METHOD_TYPE_NORMAL);
+				logger.debug("Authenticating username/password for login-method-type {}", 
+						LoginMethodTypeConstant.LOGIN_METHOD_TYPE_NORMAL);
 				
 				user = userRepository.findByUserkey(username);
 				if (user == null) {
 					logger.error("Authentication fail", new UsernameNotFoundException("User '" + username + "' not found"));
 				}
 				break;
-			case LoginMethodTypeConstant.LOGIN_METHOD_TYPE_LADAP:
+			case LoginMethodTypeConstant.LOGIN_METHOD_TYPE_LDAP:
 				
-				logger.debug("Authenticating username/password for login-method-type '{}' '{}'", LoginMethodTypeConstant.LOGIN_METHOD_TYPE_LADAP, dto.getUrl());
+				logger.debug("Authenticating username/password for login-method-type '{}' '{}'", 
+						LoginMethodTypeConstant.LOGIN_METHOD_TYPE_LDAP, dto.getUrl());
 				
 				try {
-					user = LDAPHelper.authenticateLDAPUser(dto.getUrl(), username, loginPassword);
+					user = ldapHelper.authenticateLDAPUser(dto.getUrl(), dto.getId(), username, loginPassword);
 				} catch (LdapAuthenticationException ex) {
 					logger.error("Authentication fail from '{}'", dto.getUrl());
 				}
@@ -96,12 +114,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 				break;
 			}
 			
+			
 			if (user != null) {
+				// If there's any login-method get successful authentication, then grant authority for that user.
 				logger.info("Get successful authentication from " + dto.getLoginType() + " for username '{}'", username);
 				List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 				
 				List<GlobalPermissionEntity> entityGlobalPermissions = user.getGlobalPermissions();
-				if (entityGlobalPermissions == null) {
+				if (entityGlobalPermissions == null || entityGlobalPermissions.isEmpty()) {
 					authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 					return new UserRepositoryUserDetails(user, authorities);
 				}
@@ -121,9 +141,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 			}
 		}
 		
-		throw new UsernameNotFoundException("User '" + username + "' not found");
+		return null;
+		
 	}
-	
+
 
 	private final static class UserRepositoryUserDetails extends SMSUserEntity implements UserDetails {
 

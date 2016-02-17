@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Component;
 
-import vn.com.splussoftware.sms.model.entity.login.LoginMethodEntity;
+import vn.com.splussoftware.sms.model.entity.auth.LoginMethodEntity;
 import vn.com.splussoftware.sms.model.exception.AppException;
-import vn.com.splussoftware.sms.model.repository.login.LoginMethodRepository;
+import vn.com.splussoftware.sms.model.repository.auth.LoginMethodRepository;
 import vn.com.splussoftware.sms.utils.dto.LoginMethodDto;
 
 @Component
@@ -16,9 +16,12 @@ public class LoginMethodServiceValidator {
 	@Autowired
 	private LoginMethodRepository loginMethodRepository;
 	
+	@Autowired
+	private LDAPHelper ldapHelper;
+	
 	public void validateBeforeAdding(LoginMethodDto loginMethodDto, String username, String password) {
 		try {
-			LDAPHelper.authenticateLDAPUser(loginMethodDto.getUrl(), username, password);
+			ldapHelper.authenticateLDAPUser(loginMethodDto.getUrl(), loginMethodDto.getId(), username, password);
 		} catch (InternalAuthenticationServiceException ex) {
 			throw new AppException(HttpStatus.UNAUTHORIZED.value(), "The LDAP server " + loginMethodDto.getUrl() + " is unauthorized.", null);
 		}

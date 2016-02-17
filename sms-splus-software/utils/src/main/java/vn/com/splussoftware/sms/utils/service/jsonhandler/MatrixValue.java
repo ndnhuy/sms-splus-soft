@@ -47,8 +47,19 @@ public class MatrixValue implements Comparable<MatrixValue> {
 		this.type = type;
 	}
 
+	public MatrixValue getOnId(int columnId, int rowId) {
+		if (this.columnId == columnId && this.rowId == rowId) {
+			return this;
+		}
+		return null;
+	}
+
 	@Override
 	public int compareTo(MatrixValue o) {
-		return this.rowId * (-1) - o.rowId * (-1);
+		int lvRow = this.rowId * (-1) - o.rowId * (-1);
+		if (lvRow != 0)
+			return lvRow;
+		int lvColumn = this.getColumnId() * (-1) - o.getColumnId() * (-1);
+		return lvColumn;
 	}
 }

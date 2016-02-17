@@ -17,8 +17,9 @@ public class TicketInfoEntity {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 @Column(name = "ID")
 	 private long ID;
-	 @Column(name = "Type")
-	 private String Type;
+	 
+	 @Column(name = "Value")
+	 private String Value;
 	 
 	 @Column(name = "Valuetype")
 	 private String ValueType;
@@ -46,7 +47,6 @@ public class TicketInfoEntity {
 	 
 	 public TicketInfoEntity setData(TicketInfoEntity data){
 		 this.ID = data.ID;
-		 this.Type = data.Type;
 		 this.ValueType = data.ValueType;
 		 this.Conditions = data.Conditions;
 		 this.DataType = data.DataType;
@@ -55,6 +55,7 @@ public class TicketInfoEntity {
 		 this.DataTemplateColumnID = data.DataTemplateColumnID;
 		 this.TicketID = data.TicketID;
 		 this.RelationshipID = data.RelationshipID;
+		 this.Value = data.Value;
 		 return this;
 	 }
 }

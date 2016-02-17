@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vn.com.splussoftware.sms.model.entity.login.LoginMethodEntity;
-import vn.com.splussoftware.sms.model.repository.login.LoginMethodRepository;
+import vn.com.splussoftware.sms.model.entity.auth.LoginMethodEntity;
+import vn.com.splussoftware.sms.model.repository.auth.LoginMethodRepository;
 import vn.com.splussoftware.sms.utils.dto.LoginMethodDto;
 import vn.com.splussoftware.sms.utils.validator.LoginMethodServiceValidator;
 

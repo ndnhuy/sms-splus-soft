@@ -7,7 +7,7 @@
 <body>
   <form>
     Title:<br/><input type="text" id="title" /><br/>
-    Description:<br/><textarea  rows="10" cols="40" id="desciption"></textarea><br/>
+    Description:<br/><textarea  rows="10" cols="40" id="description"></textarea><br/>
     Priority:<br/><input type="number" id="priority"/><br/>
     Provider ID:<br/><input type="number" id="providerId"/><br/>
     ResponseTime:<br/><input type="number" id="slaResponseTime"/><br/>
@@ -21,12 +21,12 @@
      var form = $(this).closest("form");
      $.ajax({
       type: "POST",
-      url: "http://localhost:8080/sms/addService",
+      url: "http://localhost:8080/sms/services/addService",
       dataType: "text",
       contentType: "application/json",  
       data: JSON.stringify({
         "title": $("#title").val(),
-        "desciption": $("#desciption").val(),
+        "description": $("#description").val(),
         "priority": $("#priority").val(),
         "providerId":$("#providerId").val(),
         "slaResponseTime": $("#slaResponseTime").val(),

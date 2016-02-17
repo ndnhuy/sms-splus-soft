@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
+
 public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntryPoint {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OAuth2UnauthorizedExceptionHandler.class);
@@ -38,7 +40,7 @@ public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntr
 					}
 				}
 				
-				response.sendRedirect("http://localhost:8182/login");
+				response.sendRedirect(AuthenticationConstant.SERVER_URL + "/login");
 				return;
 			}
 		}

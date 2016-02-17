@@ -20,14 +20,14 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 		CustomUserDetailsService.loginPassword = request.getParameter("password");
 		
 		//TODO Check authentication here
-		Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("access_token")) {
-					
-				}
-			}
-		}
+//		Cookie[] cookies = request.getCookies();
+//		if (cookies != null) {
+//			for (Cookie cookie : cookies) {
+//				if (cookie.getName().equals("access_token")) {
+//					
+//				}
+//			}
+//		}
 		
 		
 		return true;
@@ -42,7 +42,6 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		int x = 3;
 	}
 
 }

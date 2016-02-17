@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="vi">
+
+    <title>Tạo ticket</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Tạo ticket</h1>
+	<div class="elements" th:each="element,iterationStatus  : ${ELEMENTS}" th:switch="${element.dataType}">	
+			<div class="invididual" th:case="'individual'">
+		        <span th:text="${element.name}">001</span>
+		        <input th:value="${element.data.value}" value=""/>
+		    </div>
+		    <div class="table" th:case="'table'">
+		        <table border="1">
+		        	<tr>
+		        		<th th:each="column : ${element.data.columns}" th:text="${column.name}"></th>
+		        	</tr>
+		     		<tr th:each="i : ${#numbers.sequence(1, 2)}">
+		     			<td th:each="column : ${element.data.columns}" th:text="${element.data.maxRow}">Hhihi</td>
+		     		</tr>
+		        </table>
+		    </div>
+     </div>
+<button class="btnSubmit">Submit</button>
+</body>
+</html>

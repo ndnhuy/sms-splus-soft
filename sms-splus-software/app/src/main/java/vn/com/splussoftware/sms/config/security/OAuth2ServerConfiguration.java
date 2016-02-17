@@ -48,6 +48,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 import vn.com.splussoftware.sms.config.CustomHttpServletRequest;
 import vn.com.splussoftware.sms.config.OAuth2UnauthorizedExceptionHandler;
 import vn.com.splussoftware.sms.ui.common.OAuthTokenHelper;
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled=true)
@@ -201,7 +202,7 @@ public class OAuth2ServerConfiguration {
 											cookie.setMaxAge(0);
 											httpResponse.addCookie(cookie);
 										}
-										httpResponse.sendRedirect("http://localhost:8182/login");
+										httpResponse.sendRedirect(AuthenticationConstant.SERVER_URL + "/login");
 									}
 									
 								});
@@ -235,7 +236,6 @@ public class OAuth2ServerConfiguration {
 			
 			logger.debug("None found 'refresh_token' in cookies. Redirect to login page.");
 			filterChain.doFilter(request, response);
-//			((HttpServletResponse)response).sendRedirect("http://localhost:8182/login");
 		}
 
 		@Override

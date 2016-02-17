@@ -44,33 +44,37 @@ public class MatrixData {
 		}
 		values.add(mValue);
 	}
-	public void addColumn(MatrixColumnRow matrixColumn){
+
+	public void addColumn(MatrixColumnRow matrixColumn) {
 		this.getColumns().add(matrixColumn);
 	}
-	public void addRow(MatrixColumnRow matrixRow){
+
+	public void addRow(MatrixColumnRow matrixRow) {
 		this.getRows().add(matrixRow);
 	}
-	public void addValue(MatrixValue matrixValue){
+
+	public void addValue(MatrixValue matrixValue) {
 		this.getValues().add(matrixValue);
 	}
-	
-	public void fillData(){
-		for (MatrixColumnRow column : columns){
-			HashMap<Integer,Boolean> foundByRow = new HashMap<Integer, Boolean>();
-			for(MatrixColumnRow row : rows){
+
+	public void fillData() {
+		for (MatrixColumnRow column : columns) {
+			HashMap<Integer, Boolean> foundByRow = new HashMap<Integer, Boolean>();
+			for (MatrixColumnRow row : rows) {
 				foundByRow.put(row.getId(), false);
 			}
-			for (MatrixValue value : values){
-				if	(value.getColumnId() == column.getId()){
+			for (MatrixValue value : values) {
+				if (value.getColumnId() == column.getId()) {
 					foundByRow.replace(value.getRowId(), true);
 				}
 			}
-			for (Entry<Integer,Boolean> entry : foundByRow.entrySet()){
-				if (entry.getValue()) continue;
-					MatrixValue newValue = new MatrixValue();
-					newValue.setColumnId(column.getId());
-					newValue.setRowId(entry.getKey());
-					values.add(newValue);
+			for (Entry<Integer, Boolean> entry : foundByRow.entrySet()) {
+				if (entry.getValue())
+					continue;
+				MatrixValue newValue = new MatrixValue();
+				newValue.setColumnId(column.getId());
+				newValue.setRowId(entry.getKey());
+				values.add(newValue);
 			}
 		}
 	}

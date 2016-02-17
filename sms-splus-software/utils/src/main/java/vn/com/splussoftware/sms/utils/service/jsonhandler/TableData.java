@@ -78,4 +78,52 @@ public class TableData {
 		}
 		return listColumnName;
 	}
+	public TableValue getValueById(int column, int row){
+		for (TableValue value : values){
+			if (value.getColumnId() == column && value.getRow() == row){
+				return value;
+			}
+		}
+		return null;
+	}
+	public void shiftRow(int row, boolean isShiftUp){
+		int shift = -1;
+		if (!isShiftUp) shift = 1;
+			for (TableValue value : values){
+				if (value.getRow() == row){
+					value.setRow(-1);
+				}
+			}
+			for (TableValue value : values){
+				if (value.getRow() == row + shift){
+					value.setRow(row);
+				}
+			}
+			for (TableValue value : values){
+				if (value.getRow() == -1){
+					value.setRow(row + shift);
+				}
+			}
+	}
+	
+	public void dragRow(int fromRow, int toRow){
+		if (fromRow < toRow){
+			for (int i = fromRow;i< toRow; i++){
+				shiftRow(i,false);
+			}
+		} else
+			if (fromRow > toRow){
+				for (int i = fromRow;i > toRow; i--){
+					shiftRow(i,true);
+				}
+			}
+	}
+	public String getColumnType(int columnId){
+		for (TableColumn column : columns){
+			if (column.getId() == columnId){
+				return column.getType();
+			}
+		}
+		return null;
+	}
 }

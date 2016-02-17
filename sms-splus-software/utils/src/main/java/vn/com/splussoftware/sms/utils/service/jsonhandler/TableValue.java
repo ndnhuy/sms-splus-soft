@@ -4,7 +4,7 @@ public class TableValue implements Comparable<TableValue> {
 	private int columnId;
 	private int row;
 	private String value;
-	private Condition condition;
+	private Condition conditions;
 
 	public int getColumnId() {
 		return columnId;
@@ -30,12 +30,12 @@ public class TableValue implements Comparable<TableValue> {
 		this.value = value;
 	}
 
-	public Condition getCondition() {
-		return condition;
+	public Condition getConditions() {
+		return conditions;
 	}
 
-	public void setCondition(Condition condition) {
-		this.condition = condition;
+	public void setConditions(Condition condition) {
+		this.conditions = condition;
 	}
 
 	@Override
@@ -44,5 +44,11 @@ public class TableValue implements Comparable<TableValue> {
 		if (lvRow!=0) return lvRow;
 		int lvColumn = this.getColumnId() - o.getColumnId();
 		return lvColumn;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		TableValue comValue = (TableValue)obj;
+		return comValue.getRow() == this.getRow() && comValue.getColumnId() == this.getColumnId();
 	}
 }
