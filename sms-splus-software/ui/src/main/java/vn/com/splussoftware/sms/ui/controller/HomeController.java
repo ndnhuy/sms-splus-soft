@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
-import vn.com.splussoftware.sms.model.entity.auth.SMSGroupEntity;
-import vn.com.splussoftware.sms.model.entity.auth.SMSUserEntity;
 import vn.com.splussoftware.sms.model.repository.auth.GroupRepository;
 import vn.com.splussoftware.sms.utils.AuthenticationFacade;
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant.Permission;
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant.PermissionTargetType;
 import vn.com.splussoftware.sms.utils.service.AuthenticationService;
 
 
@@ -60,9 +60,10 @@ public class HomeController {
     					@RequestParam("targetId") Integer targetId,
     					@RequestParam("permission") String permission) {
     	
+    	PermissionTargetType enumTargetType = PermissionTargetType.valueOf(targetType);
+    	Permission enumPermission = Permission.valueOf(permission);
     	
-    	
-    	return Boolean.toString(authService.checkPermission(userId, targetType, targetId, permission));
+    	return Boolean.toString(authService.checkPermission(userId, enumTargetType, targetId, enumPermission));
     }
     
 }

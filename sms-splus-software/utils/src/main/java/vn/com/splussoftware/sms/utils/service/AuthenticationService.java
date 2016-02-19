@@ -9,6 +9,8 @@ import vn.com.splussoftware.sms.model.repository.auth.GlobalPermissionRepository
 import vn.com.splussoftware.sms.model.repository.auth.PermissionRepository;
 import vn.com.splussoftware.sms.model.repository.auth.UserRepository;
 import vn.com.splussoftware.sms.utils.AuthenticationFacade;
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant.Permission;
+import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant.PermissionTargetType;
 
 
 /**
@@ -41,18 +43,18 @@ public class AuthenticationService {
 		return globalPermissionRepository.existsByUserIdAndPermission(auth.getCurrentLoggedInUser().getId(), permission);
 	}
 	
-	public boolean checkPermission(Integer userId, String targetType, Integer targetId, String permission) {		
+	public boolean checkPermission(Integer userId, PermissionTargetType targetType, Integer targetId, Permission permission) {		
 		// Start filtering permission
-		if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, targetType, targetId, permission) != null) {
+		if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, targetType.toString(), targetId, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, null, targetId, permission) != null) {
+		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, null, targetId, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, null, null, permission) != null) {
+		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, null, null, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, targetType, null, permission) != null) {
+		else if (permissionRepository.findByUserIdAndTargetTypeAndTargetIdAndPermission(userId, targetType.toString(), null, permission.toString()) != null) {
 			return true;
 		}
 		
@@ -77,21 +79,21 @@ public class AuthenticationService {
 	
 	}
 	
-	public boolean checkPermissionForCurrentUser(String targetType, Integer targetId, String permission) {
+	public boolean checkPermissionForCurrentUser(PermissionTargetType targetType, Integer targetId, Permission permission) {
 		return checkPermission(auth.getCurrentLoggedInUser().getId(), targetType, targetId, permission);
 	}
 	
-	public boolean checkGroupPermission(Integer groupId, String targetType, Integer targetId, String permission) {
-		if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, targetType, targetId, permission) != null) {
+	public boolean checkGroupPermission(Integer groupId, PermissionTargetType targetType, Integer targetId, Permission permission) {
+		if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, targetType.toString(), targetId, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, null, targetId, permission) != null) {
+		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, null, targetId, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, null, null, permission) != null) {
+		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, null, null, permission.toString()) != null) {
 			return true;
 		}
-		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, targetType, null, permission) != null) {
+		else if (permissionRepository.findByGroupIdAndTargetTypeAndTargetIdAndPermission(groupId, targetType.toString(), null, permission.toString()) != null) {
 			return true;
 		}
 		

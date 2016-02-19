@@ -12,6 +12,7 @@ spring:
   aop:
     proxy-target-class: true
   thymeleaf:
+    mode: LEGACYHTML5
     cache: false
     
 

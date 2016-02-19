@@ -8,4 +8,19 @@ public class AuthenticationConstant {
 	public static final String USER_STATUS_BANNED = "banned";
 	
 	public static final String SERVER_URL = "http://localhost:8182";
+	
+	
+	public static enum Permission {
+		read,
+		write
+	}
+	public static enum PermissionTargetType {
+		ticket,
+		service
+	}
+	
+//	public static enum Role {
+//		admin("role.admin"),
+//		mod("role.mod")
+//	}
 }

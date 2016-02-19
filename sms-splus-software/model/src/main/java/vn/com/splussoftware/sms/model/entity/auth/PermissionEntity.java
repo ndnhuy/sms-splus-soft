@@ -1,10 +1,14 @@
 package vn.com.splussoftware.sms.model.entity.auth;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -28,10 +32,17 @@ public class PermissionEntity {
 	@Column(name="permission")
 	private String permission;
 	
-	@Column(name="user_id")
-	private Integer userId;
+//	@Column(name="user_id")
+//	private Integer userId;
 	
-	@Column(name="group_id")
-	private Integer groupId;
+	@ManyToOne(fetch=FetchType.EAGER)
+	private SMSUserEntity user;
+	
+//	@Column(name="group_id")
+//	private Integer groupId;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="group_id")
+	private SMSGroupEntity group;
 	
 }
