@@ -8,8 +8,10 @@ import javax.persistence.EntityNotFoundException;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
+import vn.com.splussoftware.sms.model.constant.MessagePropertiesConstant;
 import vn.com.splussoftware.sms.model.entity.auth.SMSGroupEntity;
 import vn.com.splussoftware.sms.model.entity.auth.SMSUserEntity;
 import vn.com.splussoftware.sms.model.exception.UserAlreadyInGroupException;
@@ -28,6 +30,9 @@ public class GroupServiceImpl implements GroupService {
 	
 	@Autowired
 	private DozerBeanMapper mapper;
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 	
 	@Override
 	public List<GroupDto> findAll() {
@@ -56,7 +61,10 @@ public class GroupServiceImpl implements GroupService {
 	public GroupDto findOne(Integer id) {
 		SMSGroupEntity e = groupRepository.findOne(id);
 		if (e == null) {
-			throw new EntityNotFoundException("Group not found with id " + id);
+			throw new EntityNotFoundException(
+					applicationContext.getMessage(this.getClass().getName() 
+							+ MessagePropertiesConstant.KEY_ENTITY_NOT_FOUND, 
+							new Object[] {id}, null));
 		}
 		
 		return mapper.map(e, GroupDto.class);
@@ -66,12 +74,18 @@ public class GroupServiceImpl implements GroupService {
 	public void addUserToGroup(Integer userId, Integer groupId) {
 		SMSGroupEntity eGroup = groupRepository.findOne(groupId);
 		if (eGroup == null) {
-			throw new EntityNotFoundException("Group not found with id " + groupId); 
+			throw new EntityNotFoundException(
+					applicationContext.getMessage(this.getClass().getName() 
+							+ MessagePropertiesConstant.KEY_ENTITY_NOT_FOUND, 
+							new Object[] {groupId}, null));
 		}
 		
 		SMSUserEntity eUser = userRepository.findOne(userId);
 		if (eUser == null) {
-			throw new EntityNotFoundException("User not found with id " + userId);
+			throw new EntityNotFoundException(
+					applicationContext.getMessage(this.getClass().getName() 
+							+ MessagePropertiesConstant.KEY_ENTITY_NOT_FOUND, 
+							new Object[] {groupId}, null));
 		}
 		
 		if (eGroup.getUsers().contains(eUser)) {
@@ -88,12 +102,18 @@ public class GroupServiceImpl implements GroupService {
 	public void removeUserFromGroup(Integer userId, Integer groupId) {
 		SMSGroupEntity eGroup = groupRepository.findOne(groupId);
 		if (eGroup == null) {
-			throw new EntityNotFoundException("Group not found with id " + groupId); 
+			throw new EntityNotFoundException(
+					applicationContext.getMessage(this.getClass().getName() 
+							+ MessagePropertiesConstant.KEY_ENTITY_NOT_FOUND, 
+							new Object[] {groupId}, null));
 		}
 		
 		SMSUserEntity eUser = userRepository.findOne(userId);
 		if (eUser == null) {
-			throw new EntityNotFoundException("User not found with id " + userId);
+			throw new EntityNotFoundException(
+					applicationContext.getMessage(UserServiceImpl.class.getName() 
+							+ MessagePropertiesConstant.KEY_ENTITY_NOT_FOUND, 
+							new Object[] {userId}, null));
 		}
 		
 		eGroup.getUsers().remove(eUser);

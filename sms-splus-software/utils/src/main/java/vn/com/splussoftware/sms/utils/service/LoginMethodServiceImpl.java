@@ -78,5 +78,12 @@ public class LoginMethodServiceImpl implements LoginMethodService {
 		
 		return dtoLoginMethods;
 	}
+
+	@Override
+	public LoginMethodDto save(LoginMethodDto dto) {
+		LoginMethodEntity e = loginMethodRepository.save(mapper.map(dto, LoginMethodEntity.class));
+		
+		return mapper.map(e, LoginMethodDto.class);
+	}
 	
 }

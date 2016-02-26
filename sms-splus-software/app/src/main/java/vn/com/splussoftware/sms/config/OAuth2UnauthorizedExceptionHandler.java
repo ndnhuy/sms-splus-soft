@@ -31,12 +31,16 @@ public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntr
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		
+		// Get all headers 'Accept' from request
 		Enumeration<String> headers = request.getHeaders("Accept");
 		while (headers.hasMoreElements()) {
 			String value = headers.nextElement();
+			
+			/*
+			 * if user login from browser, remove all the cookies and 
+			 * redirect them to login page
+			 */
 			if (value.contains("text/html")) {
-				// user login from browser, 
-				// remove all the cookies and redirect them to login page.
 				
 				logger.debug("Redirect to login page");
 				

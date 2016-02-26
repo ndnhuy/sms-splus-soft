@@ -16,7 +16,7 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		
+		// Get the request parameter 'passowrd' from HttpServletRequest
 		CustomUserDetailsService.loginPassword = request.getParameter("password");
 		
 		//TODO Check authentication here

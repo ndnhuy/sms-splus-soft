@@ -49,6 +49,9 @@ public class PermissionGrantingController {
 	@RequestMapping(value="/permissions", method=RequestMethod.GET)
 	public String showPermissionGrantingPage(Model model, PermissionDto permissionDto, GlobalPermissionDto globalPermissionDto) {
 		
+		
+		
+
 		/*
 		 * Show permissions on page
 		 */
@@ -59,6 +62,7 @@ public class PermissionGrantingController {
 		List<PermissionDto> dtoPermissions = permissionService.findAll();
 		
 		// Any targetType or permission is 'null', change it to "" 
+		// If targetID is null, change it to 0 to show on page
 		// to make the showing on thymeleaf easier.
 		dtoPermissions.forEach(p->{
 			if (p.getTargetType() == null) {
@@ -66,6 +70,9 @@ public class PermissionGrantingController {
 			}
 			if (p.getPermission() == null) {
 				p.setPermission("");
+			}
+			if (p.getTargetId() == null) {
+				p.setTargetId(0);
 			}
 		});
 		permissionForm.setDtoPermissions(dtoPermissions);
@@ -77,6 +84,7 @@ public class PermissionGrantingController {
 		 */
 		model.addAttribute("users", userService.findAll());
 		model.addAttribute("groups", groupService.findAll());
+		
 		
 		/*
 		 * Show info for granting global permission
@@ -104,7 +112,11 @@ public class PermissionGrantingController {
 		}
 		
 		// Update user permission
-		for(PermissionDto p : permissionForm.getDtoPermissions()) {			
+		for(PermissionDto p : permissionForm.getDtoPermissions()) {
+			// If targetID is 0, change it to null
+			if (p.getTargetId() == 0) {
+				p.setTargetId(null);
+			}
 			permissionService.save(p);
 		}
 		
@@ -145,7 +157,7 @@ public class PermissionGrantingController {
 	}
 	
 	@RequestMapping(value="/permissions/globalPermissions/delete/{id}", method=RequestMethod.GET)
-	public String grantGlobalPermission(@PathVariable("id") Integer id) {
+	public String deleteGlobalPermission(@PathVariable("id") Integer id) {
 		
 		globalPermissionService.delete(id);
 		

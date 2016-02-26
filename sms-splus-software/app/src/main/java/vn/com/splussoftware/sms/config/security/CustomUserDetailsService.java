@@ -96,7 +96,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		SMSUserEntity user = null;
 		for (LoginMethodDto dto : dtoLoginMethods) {
-			// Using username to authenticate user for each of login methods
+			/*
+			 *  Using username to authenticate user for each of login methods
+			 */
 			switch (dto.getLoginType()) {
 			case LoginMethodTypeConstant.LOGIN_METHOD_TYPE_NORMAL:
 				
@@ -126,7 +128,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 			if (user != null) {
 				/* 
 				 * If there's any login-method get successful authentication, then grant authority for that user. 
-				 * 
 				 */
 				logger.info("Get successful authentication from " + dto.getLoginType() + " for username '{}'", username);
 				List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

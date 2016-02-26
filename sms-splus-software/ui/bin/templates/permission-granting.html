@@ -42,7 +42,7 @@
 					</select>
 				</td>				
 				
-				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].targetId}"></td>
+				<td> <input type="number" min="0" max="1000" th:field="*{dtoPermissions[__${rowStat.index}__].targetId}"></td>
 				<td>
 					<select name="permission-selector" th:field="*{dtoPermissions[__${rowStat.index}__].permission}">
 						<option value="read">READ</option>
@@ -133,7 +133,7 @@
     		
     		<tr>
     			<td>Target ID: </td>
-    			<td><input th:field="*{targetId}"></td>
+    			<td><input type="number" min="0" max="1000" th:field="*{targetId}"></td>
     		</tr>
     		
     		<tr>

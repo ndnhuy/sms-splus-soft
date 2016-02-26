@@ -18,5 +18,6 @@ public interface LoginMethodService {
 	List<LoginMethodDto> findAllByOrderByPriorityDesc();
 	
 	LoginMethodDto addLoginMethod(LoginMethodDto dto, String username, String password);
+	LoginMethodDto save(LoginMethodDto dto);
 	void deleteLoginMethod(Integer id);
 }

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+
+<div class="container">
+  <h2>Login Methods</h2>
+  
+  <form action="#" th:action="@{/loginMethods/update}" th:object="${loginMethodForm}" method="POST">
+  	<table class="table" >
+	    <thead>
+	      <tr>
+	        <th>Login Type</th>
+	        <th>URL</th>
+	        <th>Priority</th>
+	      </tr>
+	    </thead>
+	    <tbody>
+	<!--       <tr th:each="loginMethod: ${loginMethods}"> -->
+	<!--         <td th:text="${loginMethod.loginType}"></td> -->
+	<!--         <td th:text="${loginMethod.url}"></td> -->
+	<!--         <td th:text="${loginMethod.priority}"></td> -->
+	<!--       </tr> -->
+	 	<tr th:each="loginMethod, rowStat: *{loginMethods}">
+	        <td hidden><input th:field="*{loginMethods[__${rowStat.index}__].id}" /></td>
+	        
+	        <td><input th:field="*{loginMethods[__${rowStat.index}__].loginType}" /></td>
+	        
+	         <td><input th:field="*{loginMethods[__${rowStat.index}__].url}" /></td>
+	         
+	         <td><input type="number" min="0" max="100" th:field="*{loginMethods[__${rowStat.index}__].priority}" /></td>
+	         
+	         <td><a th:href="@{|/loginMethods/delete/${loginMethod.id}|}">Delete</a></td>
+	      </tr>
+	      
+	      <tr>
+	      	<p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+	      </tr>
+	      
+	    </tbody>
+	  </table>
+	  
+  </form>            
+  
+  
+  
+   <form id="loginMethodForm" action="#" th:action="@{/loginMethods}" th:object="${loginMethodDto}" method="post">
+    	
+    	<table class="table">
+    		<tr>
+    			<td>Login Type: </td>
+    			<td><input type="text" th:field="*{loginType}" /></td>
+    			<td th:if="${#fields.hasErrors('loginType')}" th:errors="*{loginType}">Login Type Error</td>
+    		</tr>
+    		<tr>
+    			<td>URL: </td>
+    			<td><input type="text" th:field="*{url}" /></td>
+    			<td th:if="${#fields.hasErrors('url')}" th:errors="*{url}">URL Error</td>
+    		</tr>
+    		<tr>
+    			<td>Priority </td>
+    			<td><input type="number" min="0" max="100" th:field="*{priority}" /></td>
+    			<td th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}">Priority Error</td>
+    		</tr>
+    		<tr>
+    			<td><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td>
+    		</tr>
+    	</table> 
+    </form>
+</div>
+
+</body>
+</html>

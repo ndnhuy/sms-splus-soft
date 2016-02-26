@@ -20,6 +20,7 @@ import vn.com.splussoftware.sms.utils.dto.GlobalPermissionDto;
 import vn.com.splussoftware.sms.utils.dto.LoginMethodDto;
 import vn.com.splussoftware.sms.utils.dto.UserDto;
 import vn.com.splussoftware.sms.utils.service.GlobalPermissionService;
+import vn.com.splussoftware.sms.utils.service.GroupServiceImpl;
 import vn.com.splussoftware.sms.utils.service.UserService;
 
 @ComponentScan("vn.com.splussoftware.sms")
@@ -45,7 +46,10 @@ public class SpringBootApplicationRunner extends SpringBootServletInitializer {
 		
 		
 		/*
-		 * Below is the block of code used to create default user data
+		 * Below is the block of code used to create default user data (admin, mod, user)
+		 * 
+		 * @author HuyNDN
+		 * 
 		 */
 		
 		GlobalPermissionService globalPermissionService = ctx.getBean(GlobalPermissionService.class);
@@ -60,9 +64,13 @@ public class SpringBootApplicationRunner extends SpringBootServletInitializer {
 		
 		// Create user data
 		PasswordEncoder passwordEncoder = ctx.getBean(PasswordEncoder.class);
+		
+		//String encodedPassword = passwordEncoder.encode("123");
+		String encodedPassword = "123";
+		
 		UserDto userDto = new UserDto();
 		userDto.setUserkey("admin");
-		userDto.setPassword(passwordEncoder.encode("123"));
+		userDto.setPassword(encodedPassword);
 		userDto.setStatus("active");
 		userDto.setLoginMethodDto(new LoginMethodDto(1, null, null, null));
 		
@@ -71,7 +79,7 @@ public class SpringBootApplicationRunner extends SpringBootServletInitializer {
 		
 		userDto = new UserDto();
 		userDto.setUserkey("mod");
-		userDto.setPassword(passwordEncoder.encode("123"));
+		userDto.setPassword(encodedPassword);
 		userDto.setStatus("active");
 		userDto.setLoginMethodDto(new LoginMethodDto(1, null, null, null));
 		
@@ -80,14 +88,21 @@ public class SpringBootApplicationRunner extends SpringBootServletInitializer {
 		
 		userDto = new UserDto();
 		userDto.setUserkey("user");
-		userDto.setPassword(passwordEncoder.encode("123"));
+		userDto.setPassword(encodedPassword);
 		userDto.setStatus("active");
 		userDto.setLoginMethodDto(new LoginMethodDto(1, null, null, null));
 		
 		userDto = userService.add(userDto);
 		globalPermissionService.save(new GlobalPermissionDto(null, AuthenticationConstant.ROLE_USER, userDto.getId()));
 		
-
+		
+		/*
+		 * Below is the drafted code used to testing function
+		 */
+		
+//		GroupServiceImpl groupService = ctx.getBean(GroupServiceImpl.class);
+//		groupService.findOne(9999);
+		
 	}
 
 }

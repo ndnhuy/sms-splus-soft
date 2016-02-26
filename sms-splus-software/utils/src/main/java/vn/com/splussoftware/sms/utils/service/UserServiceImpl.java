@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 			throw ex;
 		}
 		
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword())); // Password encoder
 		
 		SMSUserEntity savedWebUser = userRepository.save(mapper.map(userDto, SMSUserEntity.class));
 		
