@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="vi">
+	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <title>Tạo ticket</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Ticket View</h1>
+	<div class="ticketinfo">
+		<h1>Ticket's info</h1>
+		<div class="inforow">
+			<span class="title">ID :</span>
+			<span class="content" id = "ticketid" th:text="${ticket.iD}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">ServiceID :</span>
+			<span class="content" th:text="${ticket.serviceID}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Status :</span>
+			<span class="content" th:text="${ticket.status}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Rating :</span>
+			<span class="content" th:text="${ticket.rating}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">SLAResponse :</span>
+			<span class="content" th:text="${ticket.sLAResponse}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">SLAImplement :</span>
+			<span class="content" th:text="${ticket.sLAImplement}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">SLAFix :</span>
+			<span class="content" th:text="${ticket.sLAFix}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Created By :</span>
+			<span class="content" th:text="${ticket.createdBy}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Created Time :</span>
+			<span class="content" th:text="${ticket.createdTime}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Modified By :</span>
+			<span class="content" th:text="${ticket.modifiedBy}"></span>
+		</div>
+		<div class="inforow">
+			<span class="title">Modified Time :</span>
+			<span class="content" th:text="${ticket.modifiedTime}"></span>
+		</div>
+	</div>
+	<iframe src="ticket2"></iframe>
+	<div class="input">
+		<h1>Input</h1>
+		<div class="elements" th:each="element  : ${ELEMENTSINP}" th:switch="${element.dataType}">	
+				<div class="individual" th:case="'individual'">
+					<h1 th:text="${element.name}"></h1>
+			        <span th:text="${element.name}">001</span>
+			        <input readonly th:id="${element.id}" class="value" th:value="${element.data.value}" th:if="${element.data.type == 'text' or element.data.type =='number' or element.data.type == 'date'}" value=""/>
+			        <textarea readonly th:id="${element.id}" class="value" th:text="${element.data.value}" th:if="${element.data.type == 'textarea'}"></textarea>
+			        <select disabled class="value" th:if="${element.data.type == 'select'}">
+	 					<option value="" th:if="${not element.data.conditions.required}">--Empty Selection--</option>
+	 					<option th:selected="${data.value == element.data.value}" th:each="data : ${element.data.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     	</select>
+			    </div>
+			    <div class="table" th:case="'table'" th:id="${element.id}">
+			    	<h1 th:text="${element.name}"></h1>
+			        <table border="1">
+			        	<tr>
+			        		<th th:each="column : ${element.data.columns}" th:text="${column.name}"></th>
+			        	</tr>
+			     		<tr th:each="i : ${#numbers.sequence(1,__${element.data.maxRow}__)}">
+			     			<td th:each="column : ${element.data.columns}">
+			     				<input readonly class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:placeholder="${column.conditions.format} ? ${column.conditions.format.text} : '' " th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type != 'select' and column.type != 'textarea'}" th:value="${value.value}"></input>
+			     				<select disabled class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:each="value: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type == 'select'}">
+			     					<option value="" th:if="${not column.conditions.required}">--Empty Selection--</option>
+			     					<option th:selected="${data.value == value.value}" th:each="data : ${column.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     				</select>
+			     				<textarea readonly class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:placeholder="${column.conditions.format} ? ${column.conditions.format.text} : '' " th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type == 'textarea'}" th:text="${value.value}"></textarea>
+			     			</td>
+			     		</tr>
+			        </table>
+			        <button th:id="${element.id}" class="btnAddRow">Add a row</button>
+			    </div>
+			    <div class="matrix" th:case="'matrix'">
+			    	<h1 th:text="${element.name}"></h1>
+			        <table border="1">
+			        	<tr>
+			        		<td>X</td>
+			        		<td th:each="column : ${element.data.columns}" th:text="${column.name}"></td>
+			        	</tr>
+			     		<tr th:each="row : ${element.data.rows}">
+			     			<td th:text="${row.name}"></td>
+			     			<td th:each="column : ${element.data.columns}">
+			     				<input readonly class="value"  th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:placeholder="${value.conditions?.format?.text}" th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == row.id} and ${value.type != 'select' and value.type != 'textarea'}" th:value="${value.value}"></input>
+			     				<select disabled class="value" th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:each="value: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == i} and ${value.type == 'select'}">
+			     					<option value="" th:if="${not value.conditions.required}">--Empty Selection--</option>
+			     					<option th:each="data : ${value.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     				</select>
+			     				<textarea readonly class="value"  th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:placeholder="${value.conditions?.format?.text}" th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == row.id} and ${value.type == 'textarea'}" th:text="${value.value}"></textarea>
+			     			</td>
+			     		</tr>
+			        </table>
+			    </div>
+	     </div>
+     </div>
+     <div>
+     	<h1>Output</h1>
+     	<div class="elements" th:each="element  : ${ELEMENTSOUT}" th:switch="${element.dataType}">	
+				<div class="individual" th:case="'individual'">
+					<h1 th:text="${element.name}"></h1>
+			        <span th:text="${element.name}">001</span>
+			        <input readonly th:id="${element.id}" class="value" th:value="${element.data.value}" th:if="${element.data.type == 'text' or element.data.type =='number' or element.data.type == 'date'}" value=""/>
+			        <textarea readonly th:id="${element.id}" class="value" th:text="${element.data.value}" th:if="${element.data.type == 'textarea'}"></textarea>
+			        <select disabled class="value" th:if="${element.data.type == 'select'}">
+	 					<option value="" th:if="${not element.data.conditions.required}">--Empty Selection--</option>
+	 					<option th:selected="${data.value == element.data.value}" th:each="data : ${element.data.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     	</select>
+			    </div>
+			    <div class="table" th:case="'table'" th:id="${element.id}">
+			    	<h1 th:text="${element.name}"></h1>
+			        <table border="1">
+			        	<tr>
+			        		<th th:each="column : ${element.data.columns}" th:text="${column.name}"></th>
+			        	</tr>
+			     		<tr th:each="i : ${#numbers.sequence(1,__${element.data.maxRow}__)}">
+			     			<td th:each="column : ${element.data.columns}">
+			     				<input readonly class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:placeholder="${column.conditions.format} ? ${column.conditions.format.text} : '' " th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type != 'select' and column.type != 'textarea'}" th:value="${value.value}"></input>
+			     				<select disabled class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:each="value: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type == 'select'}">
+			     					<option value="" th:if="${not column.conditions.required}">--Empty Selection--</option>
+			     					<option th:selected="${data.value == value.value}" th:each="data : ${column.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     				</select>
+			     				<textarea readonly class="value" th:attr="column=${value.columnId},row=${value.row},id=${element.id}" th:placeholder="${column.conditions.format} ? ${column.conditions.format.text} : '' " th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.row == i} and ${column.type == 'textarea'}" th:text="${value.value}"></textarea>
+			     			</td>
+			     		</tr>
+			        </table>
+			        <button th:id="${element.id}" class="btnAddRow">Add a row</button>
+			    </div>
+			    <div class="matrix" th:case="'matrix'">
+			    	<h1 th:text="${element.name}"></h1>
+			        <table border="1">
+			        	<tr>
+			        		<td>X</td>
+			        		<td th:each="column : ${element.data.columns}" th:text="${column.name}"></td>
+			        	</tr>
+			     		<tr th:each="row : ${element.data.rows}">
+			     			<td th:text="${row.name}"></td>
+			     			<td th:each="column : ${element.data.columns}">
+			     				<input readonly class="value"  th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:placeholder="${value.conditions?.format?.text}" th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == row.id} and ${value.type != 'select' and value.type != 'textarea'}" th:value="${value.value}"></input>
+			     				<select disabled class="value" th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:each="value: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == i} and ${value.type == 'select'}">
+			     					<option value="" th:if="${not value.conditions.required}">--Empty Selection--</option>
+			     					<option th:each="data : ${value.conditions.data}" th:text="${data.text}" th:value="${data.value}"></option>
+			     				</select>
+			     				<textarea readonly class="value"  th:attr="column=${value.columnId},row=${value.rowId},id=${element.id}" th:placeholder="${value.conditions?.format?.text}" th:each="value,vCounter: ${element.data.values}" th:if="${value.columnId == column.id} and ${value.rowId == row.id} and ${value.type == 'textarea'}" th:text="${value.value}"></textarea>
+			     			</td>
+			     		</tr>
+			        </table>
+			    </div>
+	     </div>
+     </div>
+</body>
+</html>

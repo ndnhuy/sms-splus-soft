@@ -9,4 +9,7 @@ public interface UserService {
 	UserDto findByUserkey(String userkey);
 	UserDto findByUserkeyAndLoginMethodUrl(String userkey, String loginMethodUrl);
 	UserDto add(UserDto userDto);
+	
+	Integer deleteByUserkey(String userkey);
+	void deleteAll();
 }

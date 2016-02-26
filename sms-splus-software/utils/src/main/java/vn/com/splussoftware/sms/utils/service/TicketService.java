@@ -57,4 +57,9 @@ public interface TicketService {
 	RelationshipEntity deleteRelationshipById(long id);
 	TicketInfoEntity deleteTicketInfoById(long id);
 	TicketTimeEntity deleteTicketTimeById(long id);
+	
+	List<PhaseEntity> getPhasesPrev(long id);
+	List<PhaseEntity> getPhasesForw(long id);
+	List<RelationshipEntity> getRelationPrev(long id);
+	List<RelationshipEntity> getRelationForw(long id);
 }

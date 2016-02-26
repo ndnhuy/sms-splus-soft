@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.com.splussoftware.sms.model.entity.auth.GlobalPermissionEntity;
@@ -39,7 +40,7 @@ public class GlobalPermissionServiceImpl implements GlobalPermissionService {
 
 	@Override
 	public List<GlobalPermissionUIDto> getListOfUsersWithGlobalPermission() {
-		List<GlobalPermissionEntity> entities = globalPermissionRepo.findAll();
+		List<GlobalPermissionEntity> entities = globalPermissionRepo.findAll(new Sort(Sort.Direction.ASC, "id"));
 		
 		List<GlobalPermissionUIDto> globalPermissionUIDtoList = new ArrayList<GlobalPermissionUIDto>();
 		for (GlobalPermissionEntity e : entities) {
@@ -61,6 +62,21 @@ public class GlobalPermissionServiceImpl implements GlobalPermissionService {
 	public void save(GlobalPermissionDto globalPermissionDto) {
 		GlobalPermissionEntity entity = mapper.map(globalPermissionDto, GlobalPermissionEntity.class);
 		globalPermissionRepo.saveAndFlush(entity);
+	}
+
+	@Override
+	public void deleteAll() {
+		globalPermissionRepo.deleteAll();
+	}
+
+	@Override
+	public Integer deleteByUserId(Integer userId) {
+		return globalPermissionRepo.deleteByUserId(userId);
+	}
+
+	@Override
+	public void delete(Integer id) {
+		globalPermissionRepo.delete(id);
 	}
 	
 }

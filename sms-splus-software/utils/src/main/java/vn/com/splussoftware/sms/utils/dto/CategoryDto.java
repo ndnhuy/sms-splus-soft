@@ -6,6 +6,8 @@ import org.dozer.Mapping;
 
 import lombok.Data;
 import vn.com.splussoftware.sms.model.constant.ServicesConstant;
+import vn.com.splussoftware.sms.model.entity.CategoryEntity;
+import vn.com.splussoftware.sms.model.entity.ServicesEntity;
 
 /**
  * @author KietLT
@@ -43,4 +45,22 @@ public class CategoryDto {
 	
 	@Mapping("isActive")
 	private Boolean isActive = ServicesConstant.NON_DELETE;
+	/**
+	 * kietlt 9:49 PM 2016/2/17
+	 * using set data 
+	 * 
+	 * @param ESerives
+	 *
+	 * @return: EServices
+	 */
+	public CategoryDto setData(CategoryDto data) {
+		this.name= data.getName();
+		this.description = data.getDescription();
+		this.customerId = data.getCustomerId();
+		this.createTime = data.getCreateTime();
+		this.createBy = data.getCreateBy();
+		this.modifyBy = data.getModifyBy();
+		this.modifyTime = data.getModifyTime();
+		return this;
+	}
 }

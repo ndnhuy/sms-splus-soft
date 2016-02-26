@@ -15,7 +15,6 @@ import vn.com.splussoftware.sms.utils.dto.CustomerDto;
  * 
  *         11:00 AM
  * 
- *         2/16/2015
  *
  */
 public class CustomerValidator {

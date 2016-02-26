@@ -8,6 +8,16 @@ import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
+/**
+ * This implementation helps to add custom header to an {@link HttpServletRequest} type object.
+ * <p>
+ * The filter {@link OAuth2AuthenticationFilter} will intercept the incoming HTTP request to add some custom headers.
+ * 
+ * @see OAuth2AuthenticationFilter
+ * 
+ * @author HuyNDN
+ * created on Feb 19, 2016
+ */
 public class CustomHttpServletRequest extends HttpServletRequestWrapper {
 
 	private Map customHeaderMap = null;

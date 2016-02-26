@@ -12,4 +12,6 @@ public interface GlobalPermissionRepository extends JpaRepository<GlobalPermissi
 			+ "WHERE g.userId = :userId AND LOWER(g.permission) = LOWER(:permission)")
 	boolean existsByUserIdAndPermission(@Param("userId") Integer userId, 
 										@Param("permission") String permission);
+	
+	Integer deleteByUserId(Integer userId);
 }

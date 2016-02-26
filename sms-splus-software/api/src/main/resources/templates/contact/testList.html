@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Update user</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+	<p>Please type id of services that you want to update. And click get it!</p>
+
+	<button onclick="myFunction()">Show all!</button>
+	<script>
+	var createDate;
+	var createBy;
+		function myFunction() {
+			$.ajax({
+				type:"Get",
+				dataType:"json",
+				url: 'http://localhost:8182/sms/contactPoint/listAll'
+
+			})
+			.done(function(data) {
+				console.log(data);
+				for (var i = 0; i <data.length ; i++) {
+					var num = i+ 1;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="**********Data of services "+num+" *************"
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="name: "
+					document.body.innerHTML += data[i].name;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="description: "
+					document.body.innerHTML += data[i].description;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="phone: "
+					document.body.innerHTML += data[i].phone;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="email: "
+					document.body.innerHTML += data[i].email;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="address: "
+					document.body.innerHTML += data[i].address;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="createTime: "
+					document.body.innerHTML += data[i].createTime;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="createBy: "
+					document.body.innerHTML += data[i].createBy;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="modifyTime: "
+					document.body.innerHTML += data[i].modifyTime;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="modifyBy: "
+					document.body.innerHTML += data[i].modifyBy;
+					document.body.innerHTML +="</br>"
+					document.body.innerHTML +="isActive: "
+					document.body.innerHTML += data[i].isActive;
+					document.body.innerHTML +="</br>"
+
+				};
+
+
+			})
+			.fail(function() {
+				alert("Ajax failed to fetch data")
+			})
+		}
+	</script>
+</body>
+</html>

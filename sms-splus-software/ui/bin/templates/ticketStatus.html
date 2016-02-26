@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+	<h1>Ticket Status change</h1>
+	<div class="status">
+		<input type = "radio" name = "targetStatus" id = "cancel" value="cancel"/> Cancel
+		<input type = "radio" name = "targetStatus" id = "close" value="close"/> Close
+	</div>
+	<div class="cancel">
+		<div>
+			<span>Reason:</span>
+			<textarea id = "reason"></textarea>
+		</div>	
+		<button class="btnSubmit">Submit</button>
+	</div>
+	<div class="close">
+		<div>
+			<span>Rating:</span>
+			<input type="text" id="value"/>	
+		</div>		
+		<button class="btnSubmit">Submit</button>
+	</div>
+	<script>
+		$(document).ready(function(){
+			$(".cancel,.close").hide();
+			$('[name="targetStatus"]').click(function() {
+				   if ($('#cancel').is(':checked')) { 
+					   $(".cancel, .close").hide();
+					   $(".cancel").show();
+				   }
+				   if ($('#close').is(':checked')) { 
+					   $(".cancel, .close").hide();
+					   $(".close").show();
+				   }
+				});
+			$(".btnSubmit").click(function(){
+				var ticketid = $("#ticketid",window.parent.document).text();
+				if ($('#cancel').is(':checked')) {
+					$.ajax({
+						  method: "POST",
+						  url: "cancelTicket",
+						  data: {
+							  id : ticketid,
+							  reason : $(".cancel #reason").text()
+						  }
+						  //data: $('form')
+						})
+						  .done(function( msg ) {
+						    alert( msg );
+						  });
+					}	
+			});
+		});
+	</script>
+</body>
+</html>

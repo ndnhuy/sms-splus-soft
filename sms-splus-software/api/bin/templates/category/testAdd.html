@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Define form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+  <form>
+    Name:<br/><input type="text" id="name" /><br/>
+    Description:<br/><textarea  rows="10" cols="40" id="description"></textarea><br/>
+    Customer ID:<br/><input type="number" id="customerId"/><br/>
+  </form>
+  <button class="submit" onclick="save()">Add Service</button>
+  <script>
+    function save(){
+
+     var form = $(this).closest("form");
+     $.ajax({
+      type: "POST",
+      url: "http://localhost:8182/sms/category/add",
+      dataType: "text",
+      contentType: "application/json",  
+      data: JSON.stringify({
+        "name": $("#name").val(),
+        "description": $("#description").val(),
+        "customerId":$("#customerId").val(),
+        "isActive": true
+      })
+    })
+     .done(function(data) {
+      console.log(data);
+      document.body.innerHTML +="</br>"
+      document.body.innerHTML +=data
+    })
+     .fail(function() {
+      document.body.innerHTML +="</br>"
+      document.body.innerHTML +="ERROR SERVER"
+    });
+   }
+ </script>
+</body>
+</html>

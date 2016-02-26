@@ -21,4 +21,8 @@ public final class UtilValidatorConstant {
 	 * message of error is less than 0
 	 */
 	public static String ERROR_MESSAGE_NEGATIVE = "number you input is negative";
+	/**
+	 * code of error is not found ID of table reference
+	 */
+	public static Integer ERROR_CODE_NOT_FOUND = 1003;
 }

@@ -11,7 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 import vn.com.splussoftware.sms.model.constant.CustomerEntityConstant;
@@ -39,6 +41,7 @@ public class CustomerEntity {
 	private String description;
 	
 	@NotNull
+	@DecimalMin(value="0",message="Not number")
 	@Column (name = CustomerEntityConstant.COLUMN_CONTACT_POINT_ID)
 	private Integer contactPointId;
 	

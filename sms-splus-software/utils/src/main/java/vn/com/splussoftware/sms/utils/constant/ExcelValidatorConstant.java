@@ -6,6 +6,12 @@ public class ExcelValidatorConstant {
 	 * code of error is limit length
 	 */
 	public static Integer ERROR_CODE_LENGTH = 1002;
+	public static Integer ERROR_CODE_DATE = 1003;
+	public static Integer ERROR_CODE_NUMBER = 1004;
+	public static Integer ERROR_CODE_SELECT = 1005;
+	public static Integer ERROR_CODE_TEXT_NULL = 1006;
+	public static Integer ERROR_CODE_HEADER = 1007;
+	public static Integer ERROR_CODE_FORMAT = 1008;
 	/**
 	 * message of error is less than 0
 	 */

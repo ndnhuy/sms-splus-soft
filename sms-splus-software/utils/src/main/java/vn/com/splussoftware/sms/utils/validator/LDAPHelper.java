@@ -1,13 +1,12 @@
 package vn.com.splussoftware.sms.utils.validator;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.ldap.filter.EqualsFilter;
 import org.springframework.ldap.filter.Filter;
 import org.springframework.ldap.support.LdapUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import vn.com.splussoftware.sms.model.entity.auth.LoginMethodEntity;
@@ -16,8 +15,6 @@ import vn.com.splussoftware.sms.model.exception.InvalidUserException;
 import vn.com.splussoftware.sms.model.exception.LdapAuthenticationException;
 import vn.com.splussoftware.sms.model.repository.auth.UserRepository;
 import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
-import vn.com.splussoftware.sms.utils.dto.UserDto;
-import vn.com.splussoftware.sms.utils.service.UserService;
 
 /**
  * 
@@ -32,6 +29,9 @@ public class LDAPHelper {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	public SMSUserEntity authenticateLDAPUser(String ldapUrl, Integer loginMethodId, String username, String loginPassword) {
 		LdapContextSource contextSource = new LdapContextSource();
@@ -66,7 +66,7 @@ public class LDAPHelper {
         	
         	user = new SMSUserEntity();
             user.setUserkey(username);
-            user.setPassword(loginPassword);
+            user.setPassword(passwordEncoder.encode(loginPassword)); // Encode password then save it to database
             user.setStatus(AuthenticationConstant.USER_STATUS_ACTIVE);
             user.setLoginMethodEntity(loginMethodEntity);
             

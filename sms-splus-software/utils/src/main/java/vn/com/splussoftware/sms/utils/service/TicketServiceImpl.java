@@ -1,5 +1,6 @@
 package vn.com.splussoftware.sms.utils.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -404,5 +405,44 @@ public class TicketServiceImpl implements TicketService {
 		ticketTimeRepository.delete(iObject);
 		return iObject;
 	}
+
+	@Override
+	public List<PhaseEntity> getPhasesPrev(long id) {
+		List<RelationshipEntity> relationships = relationshipRepository.findByToPhaseId(id);
+		List<PhaseEntity> result = new ArrayList<PhaseEntity>();
+	    for (RelationshipEntity relationship: relationships){
+	    	PhaseEntity targetPhase = phaseRepository.getOne(relationship.getFromPhaseID());
+	    	if (targetPhase != null){
+	    		result.add(targetPhase);
+	    	} else {
+	    		logger.warn("Phase with id = " +relationship.getFromPhaseID() + " does not found although mentioned in relationship with id = "+relationship.getID());
+	    	}
+	    }
+		return result;
+	}
 	
+	@Override
+	public List<PhaseEntity> getPhasesForw(long id) {
+		List<RelationshipEntity> relationships = relationshipRepository.findByFromPhaseId(id);
+		List<PhaseEntity> result = new ArrayList<PhaseEntity>();
+	    for (RelationshipEntity relationship: relationships){
+	    	PhaseEntity targetPhase = phaseRepository.getOne(relationship.getFromPhaseID());
+	    	if (targetPhase != null){
+	    		result.add(targetPhase);
+	    	} else {
+	    		logger.warn("Phase with id = " +relationship.getFromPhaseID() + " does not found although mentioned in relationship with id = "+relationship.getID());
+	    	}
+	    }
+		return result;
+	}
+
+	@Override
+	public List<RelationshipEntity> getRelationPrev(long id) {
+		return relationshipRepository.findByToPhaseId(id);
+	}
+
+	@Override
+	public List<RelationshipEntity> getRelationForw(long id) {
+		return relationshipRepository.findByFromPhaseId(id);
+	}	
 }

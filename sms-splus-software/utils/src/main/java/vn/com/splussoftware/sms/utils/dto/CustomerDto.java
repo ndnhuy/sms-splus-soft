@@ -44,5 +44,20 @@ public class CustomerDto {
 
 	@Mapping("isActive")
 	private Boolean isActive = ServicesConstant.NON_DELETE;
-
+	/**
+	 * kietlt 9:49 PM 2016/2/17
+	 * 
+	 * using set data 
+	 * 
+	 */
+	public CustomerDto setData(CustomerDto data) {
+		this.name= data.getName();
+		this.description = data.getDescription();
+		this.contactPointId = data.getContactPointId();
+		this.createTime = data.getCreateTime();
+		this.createBy = data.getCreateBy();
+		this.modifyBy = data.getModifyBy();
+		this.modifyTime = data.getModifyTime();
+		return this;
+	}
 }

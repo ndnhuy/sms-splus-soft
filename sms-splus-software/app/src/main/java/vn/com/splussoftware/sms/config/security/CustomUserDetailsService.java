@@ -31,11 +31,13 @@ import vn.com.splussoftware.sms.utils.validator.LDAPHelper;
 
 
 /**
+ * Loading user-specific data for authenticating
+ * <p>
+ * By far, the user data is from custom database and LDAP.
+ * Google, Facebook, Twitter OAuth2 will be implemented in the future.
  * 
- * Loading user by username for authenticating.
- *
  * @author HuyNDN
- * 
+ * created on Feb 19, 2016
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -56,7 +58,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 
 	
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
@@ -64,7 +66,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		logger.debug("Load user by username for authenticating");
 		
-		// Loading all LoginMethods and sorting them by decreasing priority
+		// The user is authenticated by pre-defined login methods in database
 		List<LoginMethodDto> dtoLoginMethods = loginMethodService.findAllByOrderByPriorityDesc();
 		if (dtoLoginMethods == null || dtoLoginMethods.isEmpty()) {
 			
@@ -82,7 +84,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return user;
 	}
 	
-
+	/**
+	 * The user will be authenticated by using list of login methods sorted by priority in decreasing order.
+	 * 
+	 * @param username the username of user wished to be authenticated
+	 * @param dtoLoginMethods a list of login methods sorted by priority in decreasing order.
+	 * @return UserDetails
+	 */
 	private UserDetails authenticateUserForEachOfLoginMethodsOrderdByDecreasingPriority(String username,
 			List<LoginMethodDto> dtoLoginMethods) {
 		
@@ -116,12 +124,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 			
 			
 			if (user != null) {
-				// If there's any login-method get successful authentication, then grant authority for that user.
+				/* 
+				 * If there's any login-method get successful authentication, then grant authority for that user. 
+				 * 
+				 */
 				logger.info("Get successful authentication from " + dto.getLoginType() + " for username '{}'", username);
 				List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 				
 				List<GlobalPermissionEntity> entityGlobalPermissions = user.getGlobalPermissions();
 				if (entityGlobalPermissions == null || entityGlobalPermissions.isEmpty()) {
+					// There's no any global permissions granted for this user, 
+					// then we treat it like a normal user.
 					authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 					return new UserRepositoryUserDetails(user, authorities);
 				}
@@ -129,6 +142,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 				
 				for (GlobalPermissionEntity e : entityGlobalPermissions) {
 					String permission = e.getPermission();
+					
+					// Make sure the permission/authority in right format
+					// (the prefix must be 'ROLE_')
 					if (!permission.startsWith("ROLE_")) {
 						permission = "ROLE_" + permission;
 					}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+<title>Group User Management</title>
+</head>
+<body>
+	<div class="container">
+		<h3 th:text="${error}"></h3>
+		
+		<table th:each="group: ${groups}" class="table">
+			<h2 th:text="${group.groupName}"></h2>
+			<p th:text="${group.description}"></p>
+			<button th:onclick="'deleteGroup(\'' + ${group.id} + '\');'">Delete Group</button>
+		    <thead>
+		      <tr>
+		        <th>Userkey</th>
+		        <th>Login Method</th>
+		        <th>Login Method Url</th>
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr th:each="user: ${group.users}" class="success">
+		        <td th:text="${user.userkey}"></td>		
+		        <td th:text="${user.loginMethodDto.loginType}"></td>
+		        <td th:text="${user.loginMethodDto.url}"></td>        	
+		        <td><button th:onclick="'removeUserFromGroup(\'' + ${user.id} + '\', \'' + ${group.id} + '\');'">Delete</button></td>
+		      </tr>
+		    </tbody>
+	  </table>
+	  
+	  <h1>Group Form</h1>
+	    
+	   	<form action="#" th:action="@{/groups}" th:object="${groupDto}" method="post">
+		   	
+	    	<table>
+	    		<tr>
+	    			<td>Group Name: </td>
+	    			<td><input type="text" th:field="*{groupName}" /></td>
+	    			<td th:if="${#fields.hasErrors('groupName')}" th:errors="*{groupName}">Group Name Error</td>
+	    		</tr>
+	    		<tr>
+	    			<td>Group Description: </td>
+	    			<td><input type="text" th:field="*{description}" /></td>
+	    			<td th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</td>
+	    		</tr>
+	    		<tr>
+	    			<td><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td>
+	    		</tr>
+	    	</table>
+
+    	</form>
+    	
+    	<h1>Add User To Group</h1>
+    	<form action="#" th:action="@{/groups/users}" th:object="${userAdditionForm}" method="post">
+    		<p>Userkey:
+			   	<select th:field="*{userId}">
+			   		<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.userkey}"></option>
+			   	</select>
+		   	</p>
+		   	
+		   	<p>Group:
+		   		<select th:field="*{groupId}">
+			   		<option th:each="group: ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+			   	</select>
+		   	</p>
+		   	
+		   	<input type="submit" value="Submit" /> <input type="reset" value="Reset" />
+
+    	</form>
+	</div>
+	
+	<script>
+		function removeUserFromGroup(userId, groupId) {
+			$.ajax({
+			    url: '/groups/' + groupId + '/users/' + userId,
+			    type: 'POST',
+			    success: function(result) {
+			    	window.location.href = "/groups";
+			    }
+			});
+		}
+		
+		function deleteGroup(groupId) {
+			$.ajax({
+				url: '/groups/' + groupId,
+				type:'POST',
+				success: function(result) {
+					window.location.href = "/groups";
+				}
+			});
+		}
+	</script>
+</body>
+</html>

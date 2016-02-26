@@ -29,6 +29,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticationProcessingFilter;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -50,6 +51,12 @@ import vn.com.splussoftware.sms.config.OAuth2UnauthorizedExceptionHandler;
 import vn.com.splussoftware.sms.ui.common.OAuthTokenHelper;
 import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
 
+/**
+ * The configuration of OAuth2 mechanism
+ * 
+ * @author HuyNDN
+ * created on Feb 19, 2016
+ */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true, securedEnabled=true)
 public class OAuth2ServerConfiguration {
@@ -79,13 +86,15 @@ public class OAuth2ServerConfiguration {
 			// @formatter:off
 			http
 				.authorizeRequests()
-					.antMatchers("/login", "/logout").permitAll()
+					.antMatchers("/login", "/logout", "/register").permitAll()
 					.antMatchers(HttpMethod.PUT, "/secure/**").authenticated()
 					.antMatchers(HttpMethod.PATCH, "/secure/**").authenticated()
 					.antMatchers(HttpMethod.DELETE, "/secure/**").authenticated()
 					.antMatchers(HttpMethod.POST, "/secure/**").authenticated()
 					.antMatchers(HttpMethod.GET, "/secure/**").authenticated()
 					.anyRequest().permitAll()
+				.and()
+					.headers().frameOptions().sameOrigin()
 				.and()
 					.exceptionHandling()
 						.authenticationEntryPoint(new OAuth2UnauthorizedExceptionHandler())
@@ -129,6 +138,7 @@ public class OAuth2ServerConfiguration {
 
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+			//TODO change all embedded code to constant
 			// @formatter:off
 			clients
 				.inMemory()
@@ -155,6 +165,24 @@ public class OAuth2ServerConfiguration {
 		}
 	}
 	
+	
+	/**
+	 * When the {@code access_token} is invalid or expired, I need to access to the incoming HTTP request to handle
+	 * this case (automatically get new access_token or redirect user to login page or return JSON message ...). 
+	 * <p>
+	 * And for that I need to modify the authentication scheme which is internal company design.
+	 * My solution is to create a new custom filter which is fired after {@link OAuth2ClientAuthenticationProcessingFilter}.
+	 * But it doesn't work because the {@link OAuth2ClientAuthenticationProcessingFilter} stops filtering 
+	 * and throw the exception in case of error.
+	 * <p>
+	 * The solution I used in the below is from this link {@code https://github.com/spring-projects/spring-security-oauth/issues/388}
+	 * <p>
+	 * The suggestion from that link is creating a custom {@link AuthenticationManager} to get access to downstream filter.
+	 * And then I can fire my custom filter {@link CustomAuthenticatorInvalidTokenFilter} in case of invalid/expreid {@code access_token}
+	 * 
+	 * @author HuyNDN
+	 * created on Feb 19, 2016
+	 */
 	protected static class CustomAuthenticatorInvalidTokenFilter extends OAuth2AuthenticationManager implements Filter {
 
 		private static Logger logger = LoggerFactory.getLogger(CustomAuthenticatorInvalidTokenFilter.class);

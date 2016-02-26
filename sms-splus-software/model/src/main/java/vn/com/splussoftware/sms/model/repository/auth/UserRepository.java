@@ -16,4 +16,7 @@ public interface UserRepository extends JpaRepository<SMSUserEntity, Integer> {
 	@Query("SELECT u FROM SMSUserEntity u WHERE u.userkey = :userkey AND u.loginMethodEntity.id = :loginMethodId")
 	SMSUserEntity findByUserkeyAndLoginMethodId(@Param("userkey") String userkey,
 												@Param("loginMethodId") String loginMethodId);
+	
+	Integer deleteByUserkey(String userkey);
+	
 }

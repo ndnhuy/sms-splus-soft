@@ -30,8 +30,10 @@ public class RelationshipEntity {
 	 @Column(name = "Fromphaseid")
 	 private long FromPhaseID;
 	 
+	 
 	 @Column(name = "Tophaseid")
 	 private long ToPhaseID;
+	 
 	 
 	 @Column(name = "Information")
 	 private String Information;

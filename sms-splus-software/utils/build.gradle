@@ -21,6 +21,10 @@ dependencies {
     compile("net.sf.dozer:dozer:5.5.1")
     
     compile("com.google.code.gson:gson:2.3.1")
+    
+    compile("javax.mail:mail:1.4.1")
+    compile("org.springframework:spring-context-support")
+    
 
     compile project (':model')
     

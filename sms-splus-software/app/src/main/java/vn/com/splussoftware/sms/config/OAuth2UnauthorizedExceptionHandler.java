@@ -15,6 +15,13 @@ import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEn
 
 import vn.com.splussoftware.sms.utils.constant.AuthenticationConstant;
 
+/**
+ * 
+ * Handling the exception thrown when user login failed.
+ * 
+ * @author HuyNDN
+ * created on Feb 19, 2016
+ */
 public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntryPoint {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OAuth2UnauthorizedExceptionHandler.class);
@@ -28,7 +35,8 @@ public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntr
 		while (headers.hasMoreElements()) {
 			String value = headers.nextElement();
 			if (value.contains("text/html")) {
-				
+				// user login from browser, 
+				// remove all the cookies and redirect them to login page.
 				
 				logger.debug("Redirect to login page");
 				
@@ -45,7 +53,7 @@ public class OAuth2UnauthorizedExceptionHandler extends OAuth2AuthenticationEntr
 			}
 		}
 		
-		
+		// user login from ajax, return JSON message.
 		super.commence(request, response, authException);
 
 	}

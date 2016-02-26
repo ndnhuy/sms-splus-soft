@@ -11,69 +11,53 @@
 <body>
 	<div class="container" ng-app="">
 		
+	<form action="#" th:action="@{/permissions/}" th:object="${permissionForm}" method="POST">
 			
-		
-<!-- 		<table class="table"> -->
-<!-- 			<tr> -->
-<!-- 				<th>Userkey</th> -->
-<!-- 				<th>Target Type</th> -->
-<!-- 			    <th>Target ID</th> -->
-<!-- 			    <th>Permission</th>   -->
-<!-- 			    <th>Group</th> -->
-<!-- 			</tr> -->
-<!-- 			<tr th:each="p: ${permissions}"> -->
-<!-- 				<td th:text="${p.userkey}"></td> -->
-<!-- 				<td> -->
-<!-- 					<select name="targetType-selector"> -->
-<!-- 		    			<option value="ticket" th:selected="${p.targetType == 'ticket'}">TICKET</option> -->
-<!-- 		    			<option value="service" th:selected="${p.targetType == 'service'}">SERVICE</option> -->
-<!-- 		    			<option value="all" th:selected="${p.targetType == null}">ALL</option> -->
-<!-- 		    		</select> -->
-<!-- 				</td> -->
-<!-- 				<td> -->
-<!-- 					<select name="targetId-selector"> -->
-<!-- 		    			<option value="1" th:selected="${p.targetId == 1}">1</option> -->
-<!-- 		    			<option value="2" th:selected="${p.targetId == 2}">2</option> -->
-<!-- 		    			<option value="3" th:selected="${p.targetId == 3}">3</option> -->
-<!-- 		    			<option value="4" th:selected="${p.targetId == 4}">4</option> -->
-<!-- 		    			<option value="all" th:selected="${p.targetId == null}">ALL</option> -->
-<!-- 		    		</select> -->
-<!-- 				</td> -->
-<!-- 				<td> -->
-<!-- 					<select name="permission-selector"> 	 -->
-<!-- 		    			<option value="read" th:selected="${p.permission == 'read'}">READ</option> -->
-<!-- 		    			<option value="write" th:selected="${p.permission == 'write'}">WRITE</option> -->
-<!-- 		    		</select> -->
-<!-- 				</td> -->
-<!-- 				<td th:text="${p.groupName}"></td> -->
-<!-- 			</tr> -->
-<!-- 		</table> -->
-		
-
-	<form action="#" th:action="@{/permissions/}" th:object="${permissionForm}" method="post">
-			
-		<h3><b>USER PERMISSION</b></h3>
+		<h3><b>GROUP-USER PERMISSION</b></h3>
 			
 		<table class="table">
 			<tr>
 				<th hidden>Id</th>
 				<th hidden>User ID</th>
 				<th hidden>Group ID</th>
+				<th>Group</th>
 				<th>Userkey</th>
 				<th>Target Type</th>
 			    <th>Target ID</th>
 			    <th>Permission</th>  
-			    <th>Group</th>
+			    
 			</tr>
 			<tr th:each="userPermission, rowStat : *{dtoPermissions}">
 				<td hidden> <input type="hidden" th:field="*{dtoPermissions[__${rowStat.index}__].id}"></td>
 				<td hidden> <input type="hidden" th:field="*{dtoPermissions[__${rowStat.index}__].userId}"></td>
 				<td hidden> <input type="hidden" th:field="*{dtoPermissions[__${rowStat.index}__].groupId}"></td>
+				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].groupName}" readonly></td>
 				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].userkey}" readonly></td>
-				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].targetType}"></td>
+				
+				<td>
+					<select name="targetType-selector" th:field="*{dtoPermissions[__${rowStat.index}__].targetType}">
+						<option value="ticket">TICKET</option>
+						<option value="service">SERVICE</option>
+						<option value="">ALL</option>
+					</select>
+				</td>				
+				
 				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].targetId}"></td>
-				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].permission}"></td>
-				<td> <input th:field="*{dtoPermissions[__${rowStat.index}__].groupName}"></td>
+				<td>
+					<select name="permission-selector" th:field="*{dtoPermissions[__${rowStat.index}__].permission}">
+						<option value="read">READ</option>
+						<option value="write">WRITE</option>
+						<option value="">ALL</option>
+					</select>
+				</td>
+				
+				<td>
+					
+					<a th:href="@{|/permissions/delete/${userPermission.id}|}">Delete</a>
+					
+				
+				</td>
+				
 			</tr>
 		</table>
 
@@ -89,45 +73,109 @@
 			  	<td hidden> <input type="hidden" th:field="*{globalPermissions[__${rowStat.index}__].id}" /> </td>
 			  	<td hidden> <input type="hidden" th:field="*{globalPermissions[__${rowStat.index}__].userId}" /> </td>
 			    <td> <input type="text" th:field="*{globalPermissions[__${rowStat.index}__].userkey}" /> </td>
- 			   	<td> <input type="text" th:field="*{globalPermissions[__${rowStat.index}__].permission}" /> </td>
-			    
+ 			   	<td>
+					<select name="targetType-selector" th:field="*{globalPermissions[__${rowStat.index}__].permission}">
+						<option value="admin">ADMIN</option>
+						<option value="mod">MOD</option>
+					</select>
+				</td>
+			    <td>
+					
+					<a th:href="@{|/permissions/globalPermissions/delete/${globalPermission.id}|}">Delete</a>
+					
+				
+				</td>
 			  </tr>
 			  
 			  
 			</table>
 	
 	
-<!--     	<table class="table"> -->
-<!-- 		  <tr> -->
-<!-- 		    <th>Userkey</th> -->
-<!-- 		    <th>Role</th>		 -->
-<!-- 		  </tr> -->
-<!-- 		  <tr th:each="u: ${usersGlobalPermission}"> -->
-<!-- 		    <td> <input th:text="${u.userkey}" th:field="*{userkey}" /> </td> -->
-<!-- 		    <td> -->
-<!-- 		    	<select name="role-selector"> -->
-<!-- 		    		<option value="admin" th:selected="${u.permission == 'admin'}">ADMIN</option> -->
-<!-- 		    		<option value="mod" th:selected="${u.permission == 'mod'}">MOD</option> -->
-<!-- 		    	</select> -->
-<!-- 		    </td> -->
-		    
-<!-- 		  </tr> -->
-		  
-		  
-<!-- 		</table> -->
 		<p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
+    
+    
+    <h3><b>GRANT USER PERMISSION</b></h3>
+    
+    <form action="#" th:action="@{/permissions/add}" th:object="${permissionDto}" method="post">	
+	   	<table class="table">
+    		<tr>
+    			<td>User: </td>
+    			<td>
+    				<select th:field="*{userId}">
+				   		<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.userkey}"></option>
+				   		<option value=null>NONE</option>
+				   	</select>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td>Group: </td>
+    			<td>
+    				<select th:field="*{groupId}">
+				   		<option th:each="group: ${groups}" th:value="${group.id}" th:text="${group.groupName}"></option>
+				   		<option value=null>NONE</option>
+				   	</select>
+    			</td>
+    			
+    		</tr>
+    		
+    		<tr>
+    			<td>Target Type: </td>
+    			<td>
+    				<select th:field="*{targetType}">
+				   		<option value="ticket">TICKET</option>
+						<option value="service">SERVICE</option>
+						<option value="">ALL</option>
+					</select>
+    			</td>
+			  
+    		</tr>
+    		
+    		<tr>
+    			<td>Target ID: </td>
+    			<td><input th:field="*{targetId}"></td>
+    		</tr>
+    		
+    		<tr>
+    			<td>Permission: </td>
+    			<td>
+    				<select th:field="*{permission}">
+						<option value="read">READ</option>
+						<option value="write">WRITE</option>
+						<option value="">ALL</option>
+					</select>
+    			</td>
+    		</tr>
+    		
+    		
+    		<tr>
+    			<td><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></td>
+    		</tr>
+    	</table>
+	   	
 
-
-<!-- 			<p ng-bind="userkey"></p> -->
-<!-- 			<p ng-bind="targetType"></p> -->
-<!-- 			<p ng-bind="targetID"></p> -->
-<!-- 			<p ng-bind="permission"></p> -->
-<!-- 			<p ng-bind="groupName"></p> -->
-			
+   	</form>
+   	
+   	<h3><b>GRANT GLOBAL PERMISSION</b></h3>
+		<form action="#" th:action="@{/permissions/globalPermissions}" th:object="${globalPermissionDto}" method="post">
+	   		<p>Userkey:
+			   	<select th:field="*{userId}">
+			   		<option th:each="user: ${users}" th:value="${user.id}" th:text="${user.userkey}"></option>
+			   	</select>
+		   	</p>
+		   	
+		   	<p>Global Permission:
+		   		<select th:field="*{permission}">
+			   		<option value="admin">ADMIN</option>
+						<option value="mod">MOD</option>
+			   	</select>
+		   	</p>
+		   	
+		   	<input type="submit" value="Submit" /> <input type="reset" value="Reset" />
+	
+	   	</form>
 	</div>
 	
-
 	
 </body>
 </html>

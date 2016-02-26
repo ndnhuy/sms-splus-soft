@@ -3,6 +3,7 @@ package vn.com.splussoftware.sms.model.entity.auth;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -52,7 +53,7 @@ public class SMSUserEntity {
 	@JoinColumn(name="login_method_id")
 	private LoginMethodEntity loginMethodEntity;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name="user_id")
 	private List<GlobalPermissionEntity> globalPermissions;
 	

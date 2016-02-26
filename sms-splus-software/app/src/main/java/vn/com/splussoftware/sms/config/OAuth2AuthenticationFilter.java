@@ -17,6 +17,15 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * Implementing {@code Remember me} function for OAuth2.
+ * This filter is to intercept the incoming HTTP request and modify the headers.
+ * 
+ * @author HuyNDN
+ * 
+ * created on Feb 19, 2016
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class OAuth2AuthenticationFilter implements Filter {
@@ -40,6 +49,10 @@ public class OAuth2AuthenticationFilter implements Filter {
 		if (logger.isDebugEnabled())
 			logger.debug("Find cookie named 'access_token' in request's header");
 		
+		/*
+		 * Find the 'access_token' in cookies then put it into header 
+		 * to pass the authentication (OAuth2)
+		 */
 		Cookie[] cookies = customRequest.getCookies();
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {

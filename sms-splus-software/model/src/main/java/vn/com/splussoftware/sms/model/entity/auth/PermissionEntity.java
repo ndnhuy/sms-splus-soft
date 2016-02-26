@@ -35,13 +35,13 @@ public class PermissionEntity {
 //	@Column(name="user_id")
 //	private Integer userId;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	private SMSUserEntity user;
 	
 //	@Column(name="group_id")
 //	private Integer groupId;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="group_id")
 	private SMSGroupEntity group;
 	

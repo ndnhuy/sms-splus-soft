@@ -28,24 +28,33 @@ span {
 	text-align: center;
 }
 </style>
-	<script  th:inline="javascript">
+	<script>
 		$(document).ready(function() {
-
+			var txt = "";
 			$(".upload").change(function() {
 
-				
-
 				var data = new FormData();
-				$.each($('#file').prop("files"), function(k, v) {
-					var filename = v['name'];
-					data.append('name', filename);
-					// filename = "blahblah.jpg", without path
-				});
 
 				jQuery.each(jQuery('#file')[0].files, function(i, file) {
-					data.append('file', file);
+
+					var type = file.type;
+					alert(name);
+					switch (type) {
+					case 'application/vnd.ms-excel':
+						var size = file.size;
+						if (1000000 > size) {
+							txt += size + "bytes" + "/n";
+							data.append('file', file);
+						} else {
+							alert('Invalid File Size');
+
+						}
+						break;
+					default:
+						alert('Unsupported File! Acceptable file type: xls');
+					}
+
 				});
-				
 				jQuery.ajax({
 					url : 'uploadToTemp',
 					data : data,
